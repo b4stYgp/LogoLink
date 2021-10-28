@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LogoLink</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_levels">Levels</string>
+    <string name="btn_profiles">Profiles</string>
+    <string name="btn_settings">Settings</string>
+</resources>
