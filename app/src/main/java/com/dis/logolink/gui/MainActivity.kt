@@ -17,10 +17,18 @@ class MainActivity : AppCompatActivity() {
         val btnProfiles = findViewById<Button>(R.id.btn_profiles)
         val btnSettings = findViewById<Button>(R.id.btn_settings)
 
+        //Settings listener
         btnSettings.setOnClickListener{
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
             Toast.makeText(this, "Clicked", Toast.LENGTH_LONG).show()
+        }
+
+        //Levels listener
+        btnLevels.setOnClickListener{
+            val intent = Intent(this, LevelsActivity::class.java)
+            startActivity(intent)
+            Toast.makeText(this, "Clicked 'Levels'", Toast.LENGTH_LONG).show()
         }
     }
 }
