@@ -30,7 +30,6 @@
             android:layout_width="250dp"
             android:layout_height="75dp"
             android:textSize="42sp"
-            android:gravity="center"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

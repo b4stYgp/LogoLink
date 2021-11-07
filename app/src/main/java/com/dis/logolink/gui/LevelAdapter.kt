@@ -5,11 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
-    private var levelNames = arrayOf("Level 1", "Level 2")
+    //Filler levelNames
+    private var levelNames = arrayOf("Level 1", "Level 2", "Level 3", "Level 4"
+        , "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10")
     private var image = R.drawable.levels_chip
 
     //View holder class with attributes and init function
@@ -23,7 +26,7 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
             //On click listener
             itemView.setOnClickListener{
-
+                Toast.makeText(itemView.context, "Clicked", Toast.LENGTH_LONG).show()
             }
         }
     }
