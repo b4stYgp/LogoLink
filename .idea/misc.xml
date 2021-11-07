@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_levels.xml" value="0.2015625" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/levels_item.xml" value="0.19791666666666666" />
+        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/settings_activity.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/xml/root_preferences.xml" value="0.25" />
       </map>
     </option>
   </component>
