@@ -27,6 +27,7 @@
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:src="@drawable/image_android_development"
+            android:contentDescription="@string/logoDescription"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
