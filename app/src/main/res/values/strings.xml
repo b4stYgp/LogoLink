@@ -10,6 +10,7 @@
     <!-- LevelsActivity -->
     <string name="levels_title">Select a level</string>
     <string name="level_name">Level %$i</string>
+    <string name="level_icon_description" translatable="false">Gate Icon</string>
 
     <!-- SettingsActivity -->
     <string name="settings_header">Settings</string>
