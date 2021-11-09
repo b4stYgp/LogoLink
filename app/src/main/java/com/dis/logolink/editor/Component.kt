@@ -28,6 +28,15 @@ abstract class Component(
     operator fun times(component: Component) : OrGate {
         val newInputList = mutableListOf(this.output,component.output)
         return OrGate(Position(0,0),newInputList,"AndGate through multiplication with Component")
+    }
 
+    operator fun div(input: Input) : XorGate{
+        val newInputList = mutableListOf(this.output,input)
+        return XorGate(Position(0,0),newInputList,"AndGate through division with Input")
+    }
+
+    operator fun div(component: Component) : XorGate {
+        val newInputList = mutableListOf(this.output,component.output)
+        return XorGate(Position(0,0),newInputList,"XorGate through division with Component")
     }
 }
