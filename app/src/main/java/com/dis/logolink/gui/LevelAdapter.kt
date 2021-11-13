@@ -1,12 +1,15 @@
 package com.dis.logolink.gui
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.dis.logolink.level.Level1Activity
 
 class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
@@ -27,6 +30,8 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
             //On click listener
             itemView.setOnClickListener{
                 Toast.makeText(itemView.context, "Clicked", Toast.LENGTH_LONG).show()
+                //Test activity 1
+                it.context.startActivity(Intent(itemView.context, Level1Activity::class.java))
             }
         }
     }

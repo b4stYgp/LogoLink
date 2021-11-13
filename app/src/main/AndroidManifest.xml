@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LogoLink">
         <activity
+            android:name="com.dis.logolink.level.Level1Activity"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape"/>
+        <activity
             android:name=".LevelsActivity"
             android:exported="true" />
         <activity

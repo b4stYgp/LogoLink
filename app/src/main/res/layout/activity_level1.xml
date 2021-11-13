@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dis.logolink.level.Level1Activity"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_80"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8"
+        />
+
+    <!-- Canvas -->
+    <ImageView
+        android:id="@+id/level1_canvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <!-- Lamp 1 -->
+    <ImageButton
+        android:id="@+id/level1_lamp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/lamp_off"
+        android:rotation="90"
+        android:background="@null"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/level1_lamp2"
+        />
+
+    <!-- Lamp 2 -->
+    <ImageButton
+        android:id="@+id/level1_lamp2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/lamp_off"
+        android:rotation="90"
+        android:background="@null"
+
+        app:layout_constraintTop_toBottomOf="@+id/level1_lamp1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <!-- AND Gate 1 -->
+    <ImageView
+        android:id="@+id/level1_and1"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/image_android_development"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/vertical_20"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_80"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <!-- Output -->
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/lamp_off"
+        android:rotation="90"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/vertical_80"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
