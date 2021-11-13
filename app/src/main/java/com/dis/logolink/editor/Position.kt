@@ -1,4 +1,4 @@
 package com.dis.logolink.editor
 
-class Position(val xAchse: Int, val yAchse: Int) {
+class Position(val layer: Int, val index: Int) {
 }
