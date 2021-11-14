@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.Toast
+import com.dis.logolink.level.Level1Activity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -18,7 +21,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     //On click listener override
-    override fun onClick(view: View?) {
+    override fun onClick(view: View?): Unit {
         when(view?.id){
             R.id.btn_continue ->{}
             R.id.btn_levels ->{startActivity(Intent(view.context, LevelsActivity::class.java))}
