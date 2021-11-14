@@ -5,9 +5,13 @@
       <map>
         <entry key="..\:/Repo/LogoLink/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Repo/LogoLink/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22135416666666666" />
+        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_game.xml" value="0.17831813576494426" />
+        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_level1.xml" value="0.2328125" />
+        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_level_editor.xml" value="0.36666666666666664" />
         <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_level_playable1.xml" value="0.22" />
-        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_levels.xml" value="0.16" />
-        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_levels.xml" value="0.1" />
+        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/levels_item.xml" value="0.11096014492753623" />
         <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/nav_draw_editor.xml" value="0.36666666666666664" />
         <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/nav_drawer_editor.xml" value="0.36666666666666664" />
         <entry key="..\:/Repo/LogoLink/app/src/main/res/layout/nav_header_editor.xml" value="0.36666666666666664" />

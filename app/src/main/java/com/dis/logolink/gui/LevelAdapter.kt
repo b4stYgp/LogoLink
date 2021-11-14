@@ -9,7 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.dis.logolink.editor.LevelEditorActivity
 import com.dis.logolink.level.Level1Activity
+import kotlinx.android.synthetic.main.levels_item.view.*
 
 class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
@@ -29,9 +31,13 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
             //On click listener
             itemView.setOnClickListener{
-                Toast.makeText(itemView.context, "Clicked", Toast.LENGTH_LONG).show()
+                Toast.makeText(it.context, it.levelx_name.text, Toast.LENGTH_LONG).show()
                 //Test activity 1
-                it.context.startActivity(Intent(itemView.context, Level1Activity::class.java))
+                when(it.levelx_name.text) {
+                    "Level 1" -> {it.context.startActivity(Intent(itemView.context,Level1Activity::class.java))}
+                    "Level 2" -> {it.context.startActivity(Intent(it.context,LevelEditorActivity::class.java))}
+                }
+
             }
         }
     }
