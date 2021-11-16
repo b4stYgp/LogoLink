@@ -38,6 +38,8 @@
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
             android:text="@string/btn_continue"
+            android:fontFamily="@font/font_arcadeclassic"
+            android:textSize="30sp"
 
             app:layout_constraintBottom_toTopOf="@+id/btn_levels"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -52,6 +54,8 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginBottom="25dp"
             android:text="@string/btn_levels"
+            android:fontFamily="@font/font_arcadeclassic"
+            android:textSize="30sp"
 
             app:layout_constraintBottom_toTopOf="@+id/btn_settings"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -66,6 +70,8 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginBottom="25dp"
             android:text="@string/btn_settings"
+            android:fontFamily="@font/font_arcadeclassic"
+            android:textSize="30sp"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
