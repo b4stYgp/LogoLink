@@ -1,0 +1,15 @@
+layers:
+ -
+  -
+   inputIndizes: "[0,1]"
+   outputIndex: "0"
+   component: "and"
+  -
+   inputIndizes: "[1,2]"
+   outputIndex: "1"
+   component: "or"
+ -
+  -
+   inputIndizes: "[0,1]"
+   outputIndex: "0"
+   component: "nor"

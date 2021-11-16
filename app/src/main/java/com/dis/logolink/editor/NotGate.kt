@@ -5,6 +5,7 @@ open class NotGate(position: Position,
                    name: String,
 ) : Component(position, inputList, name) {
     override fun setResult(): Boolean {
+        output.value = inputList[0].value.not()
         return inputList[0].value.not()
     }
 

@@ -1,0 +1,17 @@
+<Field>
+  <layer1>
+    <inputIndizes>[0,1]</inputIndizes>
+    <outputIndex>0</outputIndex>
+    <component>and</component>
+  </layer1>
+  <layer1>
+    <inputIndizes>[1,2]</inputIndizes>
+    <outputIndex>1</outputIndex>
+    <component>or</component>
+  </layer1>
+  <layer2>
+    <inputIndizes>[0,1]</inputIndizes>
+    <outputIndex>0</outputIndex>
+    <component>nor</component>
+  </layer2>
+</Field>

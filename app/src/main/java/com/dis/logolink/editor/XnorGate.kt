@@ -13,6 +13,7 @@ class XnorGate(position: Position,
         {
             result = itr.next().value.xor(itr.next().value)
         }
+        output.value = !result
         return !result
     }
 

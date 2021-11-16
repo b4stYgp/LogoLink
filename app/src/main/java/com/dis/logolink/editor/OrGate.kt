@@ -13,6 +13,7 @@ class OrGate(position: Position,
         while (itr.hasNext()) {
             result = result.or(itr.next().value)
         }
+        output.value = result
         return result
     }
 

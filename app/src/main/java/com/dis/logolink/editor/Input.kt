@@ -1,6 +1,6 @@
 package com.dis.logolink.editor
 
-class Input(val value: Boolean) {
+class Input(var value: Boolean) {
 
     operator fun plus(input: Input): AndGate {
         val newInputList = mutableListOf<Input>(this,input)

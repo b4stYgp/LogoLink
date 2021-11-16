@@ -7,7 +7,8 @@ abstract class Component(
 ) {
     var result = setResult()
     abstract fun setResult(): Boolean
-    var output = Input(result)
+    lateinit var output: Input
+
     abstract operator fun not() : Component
 
     operator fun plus(input: Input): AndGate {

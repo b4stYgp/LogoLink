@@ -13,6 +13,7 @@ open class AndGate(position: Position,
         {
             result = result.and(itr.next().value)
         }
+        output.value = result
         return result
     }
 

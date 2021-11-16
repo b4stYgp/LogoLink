@@ -1,0 +1,27 @@
+{
+    "layers": [
+        {
+            "buildingObjects": [
+                {
+                    "inputIndizes": "0,1",
+                    "outputIndex": "0",
+                    "component": "and"
+                },
+                {
+                    "inputIndizes": "1,2",
+                    "outputIndex": "1",
+                    "component": "or"
+                }
+            ]
+        },
+        {
+            "buildingObjects": [
+                {
+                    "inputIndizes": "0,1,2,3",
+                    "outputIndex": "0",
+                    "component": "xnor"
+                }
+            ]
+        }
+    ]
+}

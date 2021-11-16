@@ -12,6 +12,7 @@ class NandGate(position: Position,
         while (itr.hasNext()) {
             result = result.and(itr.next().value)
         }
+        output.value = !result
         return !result
     }
 
