@@ -1,4 +1,4 @@
 package com.dis.logolink.editor
 
-class Layer(components: MutableList<Component>) {
+class Layer(var components: MutableList<Component>) {
 }

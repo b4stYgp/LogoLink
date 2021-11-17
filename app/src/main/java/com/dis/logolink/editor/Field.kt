@@ -1,4 +1,5 @@
 package com.dis.logolink.editor
 
-class Field(layers: MutableList<Layer>) {
+class Field(var layers: MutableList<Layer>) {
+
 }

@@ -30,8 +30,8 @@ class LevelEditorActivity : AppCompatActivity() {
             //var file = File("app/src/main/assets/testLevel.json")
             val json = assets.open("testLevel.json")
             var fieldDto = Klaxon().parse<FieldDto>(json.bufferedReader())
-            var fieldList = createField(fieldDto as FieldDto)
-            var field = connectField(fieldList)
+            var field: Field = createField(fieldDto as FieldDto)
+
             //generateComponentsList()
             LevelEditorLayout.removeView(btn)
         }
@@ -39,58 +39,62 @@ class LevelEditorActivity : AppCompatActivity() {
 
     }
 
+    //WIP
     fun loadFromFile(path: String, context: Context): FieldDto {
         val mapper = ObjectMapper(YAMLFactory())
         mapper.registerModule(KotlinModule())
         return context.assets.open(path).use { mapper.readValue(it, FieldDto::class.java) }
     }
 
-    private fun createField(fieldDto: FieldDto): MutableList<MutableList<Component>> {
+    //WIP
+    private fun createField(fieldDto: FieldDto): Field {
         var itrLayers = fieldDto.layerDtos!!.iterator()
-        lateinit var LayersCompList: MutableList<MutableList<Component>> //Field[Layer[Components[]]
+        lateinit var field: Field//Field[Layer[Components[]]
         while (itrLayers!!.hasNext()) {  //in LayersList
-            LayersCompList.add(createLayer(itrLayers.next()))
+            field.layers.add(createLayer(itrLayers.next()))
         }
-        return LayersCompList
-    }
 
-    private fun createLayer(next: LayerDto): MutableList<Component> {
-        var buildObjItr = next.componentDtos!!.iterator()
-        lateinit var ComponentList: MutableList<Component>
-        while (buildObjItr.hasNext()) { // in BuildingObjects List
-           ComponentList.add(createComponent(buildObjItr.next()))
-        }
-        return ComponentList
+        return field
     }
+    //WIP
+    private fun createLayer(next: LayerDto): Layer {
+        var buildObjItr = next.componentDtos!!.iterator()
+        lateinit var layer: Layer
+        while (buildObjItr.hasNext()) { // in BuildingObjects List
+           layer.components.add(createComponent(buildObjItr.next()))
+        }
+        return layer
+    }
+    //WIP
     private fun createComponent(next: ComponentDto): Component {
         var nextBuildObj = next
         lateinit var component: Component
         when (nextBuildObj.component) {
-            "and" -> {
+            "and" -> { component = AndGate(Position(0,0), mutableListOf(Input(false),Input(false)),"and")
             }
-            "nand" -> {
+            "nand" -> { component = NandGate(Position(0,0), mutableListOf(Input(false),Input(false)),"nand")
             }
-            "or" -> {
+            "or" -> { component = OrGate(Position(0,0), mutableListOf(Input(false),Input(false)),"or")
                 }
-            "nor" -> {
+            "nor" -> { component = NorGate(Position(0,0), mutableListOf(Input(false),Input(false)),"nor")
                 }
-            "xor" -> {
+            "xor" -> { component = XorGate(Position(0,0),mutableListOf(Input(false), Input(false)), "xor")
             }
-            "xnor" -> {
+            "xnor" -> { component = XnorGate(Position(0,0), mutableListOf(Input(false),Input(false)),"xnor")
                 }
-            "not" -> {
+            "not" -> { component = NotGate(Position(0,0), mutableListOf(Input(false)),"not")
                 }
-            else -> {
+            else -> { return component
                 }
         }
         return component
     }
 
-
+    private fun createField(fieldList: MutableList<MutableList<Component>>){
 
     }
 }
-}
+
 
 
 
