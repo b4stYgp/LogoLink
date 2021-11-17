@@ -50,7 +50,7 @@ class LevelEditorActivity : AppCompatActivity() {
     private fun createField(fieldDto: FieldDto): Field {
         var itrLayers = fieldDto.layerDtos!!.iterator()
         lateinit var field: Field//Field[Layer[Components[]]
-        while (itrLayers!!.hasNext()) {  //in LayersList
+        while (itrLayers!!.hasNext()) {  //in LayersList (Field)
             field.layers.add(createLayer(itrLayers.next()))
         }
 
@@ -60,29 +60,30 @@ class LevelEditorActivity : AppCompatActivity() {
     private fun createLayer(next: LayerDto): Layer {
         var buildObjItr = next.componentDtos!!.iterator()
         lateinit var layer: Layer
-        while (buildObjItr.hasNext()) { // in BuildingObjects List
+        while (buildObjItr.hasNext()) { // in BuildingObjects List (Layer)
            layer.components.add(createComponent(buildObjItr.next()))
         }
         return layer
     }
-    //WIP
-    private fun createComponent(next: ComponentDto): Component {
+    //WIP 
+    private fun createComponent(next: ComponentDto): Component {  //in Component
         var nextBuildObj = next
         lateinit var component: Component
+        var inputList: MutableList<Input> = createInputList(next.inputIndizes)
         when (nextBuildObj.component) {
-            "and" -> { component = AndGate(Position(0,0), mutableListOf(Input(false),Input(false)),"and")
+            "and" -> { component = AndGate(Position(0,0), inputList,"and")
             }
-            "nand" -> { component = NandGate(Position(0,0), mutableListOf(Input(false),Input(false)),"nand")
+            "nand" -> { component = NandGate(Position(0,0), inputList,"nand")
             }
-            "or" -> { component = OrGate(Position(0,0), mutableListOf(Input(false),Input(false)),"or")
+            "or" -> { component = OrGate(Position(0,0), inputList,"or")
                 }
-            "nor" -> { component = NorGate(Position(0,0), mutableListOf(Input(false),Input(false)),"nor")
+            "nor" -> { component = NorGate(Position(0,0), inputList,"nor")
                 }
-            "xor" -> { component = XorGate(Position(0,0),mutableListOf(Input(false), Input(false)), "xor")
+            "xor" -> { component = XorGate(Position(0,0), inputList, "xor")
             }
-            "xnor" -> { component = XnorGate(Position(0,0), mutableListOf(Input(false),Input(false)),"xnor")
+            "xnor" -> { component = XnorGate(Position(0,0), inputList,"xnor")
                 }
-            "not" -> { component = NotGate(Position(0,0), mutableListOf(Input(false)),"not")
+            "not" -> { component = NotGate(Position(0,0), inputList,"not")
                 }
             else -> { return component
                 }
@@ -90,8 +91,15 @@ class LevelEditorActivity : AppCompatActivity() {
         return component
     }
 
-    private fun createField(fieldList: MutableList<MutableList<Component>>){
-
+    private fun createInputList(inputIndizes: String?): MutableList<Input> {
+        var listCounter = inputIndizes?.split(",")?.size
+        var counter = 0
+        lateinit var inputList : MutableList<Input>
+        while(counter < listCounter as Int){
+            inputList.add(Input(false))
+            counter++
+        }
+        return inputList
     }
 }
 
