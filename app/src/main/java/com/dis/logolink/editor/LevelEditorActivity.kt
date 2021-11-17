@@ -29,8 +29,9 @@ class LevelEditorActivity : AppCompatActivity() {
             it
             //var file = File("app/src/main/assets/testLevel.json")
             val json = assets.open("testLevel.json")
-            var field = Klaxon().parse<FieldDto>(json.bufferedReader())
-            createComponents(field as FieldDto)
+            var fieldDto = Klaxon().parse<FieldDto>(json.bufferedReader())
+            var fieldList = createField(fieldDto as FieldDto)
+            var field = connectField(fieldList)
             //generateComponentsList()
             LevelEditorLayout.removeView(btn)
         }
@@ -44,55 +45,55 @@ class LevelEditorActivity : AppCompatActivity() {
         return context.assets.open(path).use { mapper.readValue(it, FieldDto::class.java) }
     }
 
-    private fun createComponents(fieldDto: FieldDto) {
+    private fun createField(fieldDto: FieldDto): MutableList<MutableList<Component>> {
         var itrLayers = fieldDto.layerDtos!!.iterator()
-        lateinit var LayersCompList : MutableList<MutableList<Component>> //Field[Layer[Components[]]]
-        var layerIndex = 0
-        while(itrLayers!!.hasNext()){  //in LayersList
-            LayersCompList.add(create)
-            var buildObjItr = itrLayers.next().componentDtos!!.iterator()
-            var componentCounter = 0 // index for OutputList -> Input Layer[>1]
-            while(buildObjItr.hasNext()) { // in BuildingObjects List
-                var nextBuildObj = buildObjItr!!.next()
-                when (nextBuildObj.component) {
-                    "or" -> {
-                       /* if(inputList!![])
-                        var orGate = OrGate(
-                            Position(layerIndex,componentCounter),
-                            mutableListOf(Input(false),Input(false))
-                        compList[layerIndex].add()
-
-                        */
-
-                    }
-                    "nor" -> {
-
-                    }
-                    "and" -> {
-
-                    }
-                    "nand" -> {
-
-                    }
-                    "xor" -> {
-
-                    }
-                    "xnor" -> {
-
-                    }
-                    "not" -> {
-
-                    }
-                    else -> {
-                    }
-
-                }
-                componentCounter++
-            }
-            layerIndex++
+        lateinit var LayersCompList: MutableList<MutableList<Component>> //Field[Layer[Components[]]
+        while (itrLayers!!.hasNext()) {  //in LayersList
+            LayersCompList.add(createLayer(itrLayers.next()))
         }
+        return LayersCompList
+    }
+
+    private fun createLayer(next: LayerDto): MutableList<Component> {
+        var buildObjItr = next.componentDtos!!.iterator()
+        lateinit var ComponentList: MutableList<Component>
+        while (buildObjItr.hasNext()) { // in BuildingObjects List
+           ComponentList.add(createComponent(buildObjItr.next()))
+        }
+        return ComponentList
+    }
+    private fun createComponent(next: ComponentDto): Component {
+        var nextBuildObj = next
+        lateinit var component: Component
+        when (nextBuildObj.component) {
+            "and" -> {
+            }
+            "nand" -> {
+            }
+            "or" -> {
+                }
+            "nor" -> {
+                }
+            "xor" -> {
+            }
+            "xnor" -> {
+                }
+            "not" -> {
+                }
+            else -> {
+                }
+        }
+        return component
     }
 
 
+
+    }
 }
+}
+
+
+
+
+
 
