@@ -1,4 +1,4 @@
-package com.dis.logolink.level
+/*package com.dis.logolink.level
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -24,7 +24,7 @@ class Level1Activity : AppCompatActivity() {
 
     val mappingList = mutableListOf(mutableListOf(mutableListOf(0,1)))
     val componentList = mutableListOf(mutableListOf("AND"))
-    val level1 = Level(defaultInputList, mappingList, componentList)
+    //val level1 = Level(defaultInputList, mappingList, componentList)
 
     private fun ChangeLampImage(lampInput: Boolean, img: ImageButton){
         //Lamp is turned on, 1
@@ -38,10 +38,10 @@ class Level1Activity : AppCompatActivity() {
     }
 
     fun checkSolution() {
-        println(level1.layerList.last().componentList)
-        if (level1.layerList.last().componentList[0].result) {
-            level1_output.setImageResource(R.drawable.lamp_on)
-        }
+        //println(level1.layerList.last().componentList)
+        //if (level1.layerList.last().componentList[0].result) {
+          //  level1_output.setImageResource(R.drawable.lamp_on)
+        //}
         else {level1_output.setImageResource(R.drawable.lamp_off)}
     }
 
@@ -118,4 +118,4 @@ class Level1Activity : AppCompatActivity() {
             level1_canvas.background = BitmapDrawable(resources, bitmap)
         }
     }
-}
+}*/

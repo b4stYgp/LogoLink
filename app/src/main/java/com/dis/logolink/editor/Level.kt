@@ -7,26 +7,42 @@ package com.dis.logolink.editor
  * @param mappingList all Layer mappings. Index references Layer.
  * @param componentNameList all Layer components. Index references Layer.
  */
-class Level(defaultInputList: MutableList<Component>,
-            nestedMappingList: MutableList<MutableList<MutableList<Int>>>,
-            nestedComponentNameList: MutableList<MutableList<String>>) {
+class Level(defaultI: MutableList<Boolean>,
+            layerDtoList: MutableList<LayerDto>) {
+
+
+    override fun toString(): String {
+        var str = "inputs:$defaultInputList\nlevel0:"
+        layerList.forEach(){layer ->  str = "$str\n$layer"}
+        return str
+    }
 
     val layerList = mutableListOf<Layer>()
+    val defaultInputList = mutableListOf<Component>()
 
     init {
-        nestedMappingList.zip(nestedComponentNameList).forEachIndexed() { index, layerInfo ->
-            val mappingList = layerInfo.first
-            val componentList = layerInfo.second
-            if (index==0) {
-                layerList.add(Layer(mappingList,
-                    defaultInputList,
-                    componentList, index))
+            val pos = Position(0,0)
+
+            defaultI.forEachIndexed(){index2, gate ->
+                val inputGate = IdentityGate(pos, mutableListOf(), "INPUT$index2")
+                if(gate) {
+                    inputGate.state = 1
+                }
+                defaultInputList.add(inputGate)
             }
-            else {
-                layerList.add(Layer(mappingList,
-                    layerList[index-1].componentList,
-                    componentList, index))
+        layerDtoList.forEachIndexed(){ index, layer ->
+                layer.components
+                layer.mapping
+                if (index!=0){
+                    layerList.add(Layer(layer.mapping,
+                        layerList[index-1].componentList,
+                        layer.components,
+                        index))
+                }
+                else {
+                    layerList.add(Layer(layer.mapping, defaultInputList, layer.components, index))
+                }
             }
-        }
+
     }
 }

@@ -11,7 +11,7 @@ open class AndGate(position: Position,
         val itr = list.iterator()
         while(itr.hasNext())
         {
-            result = result.and(itr.next().result)
+            result = result.and(itr.next().setResult())
         }
         return result
     }

@@ -3,7 +3,6 @@
     <string name="app_name">LogoLink</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_levels">Levels</string>
-    <string name="btn_profiles">Profiles</string>
     <string name="btn_settings">Settings</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="logoDescription">Logolink logo</string>
@@ -11,6 +10,7 @@
     <!-- LevelsActivity -->
     <string name="levels_title">Select a level</string>
     <string name="level_name">Level %$i</string>
+    <string name="level_icon_description" translatable="false">Gate Icon</string>
 
     <!-- SettingsActivity -->
     <string name="settings_header">Settings</string>

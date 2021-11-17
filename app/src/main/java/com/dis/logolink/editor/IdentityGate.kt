@@ -2,10 +2,8 @@ package com.dis.logolink.editor
 
 open class IdentityGate(position: Position,
                    inputList: MutableList<Component>,
-                   name: String,
+                   name: String
 ) : Component(position, inputList, name) {
-
-    private var state = -1
 
     override fun setResult(): Boolean {
 
@@ -13,10 +11,10 @@ open class IdentityGate(position: Position,
             -1 -> return false
             1 -> return true
             0 -> if (inputList.size == 1) {
-                return inputList[0].result
+                return inputList[0].setResult()
             }
         }
-        throw Exception("Unknown 'IdentityGate' state")
+        throw Exception("Unknown 'IdentityGate' state: $state")
     }
 
     fun invert(): IdentityGate {

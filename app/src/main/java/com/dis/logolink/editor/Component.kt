@@ -5,14 +5,8 @@ abstract class Component(
     var inputList: MutableList<Component>,
     val name: String
 ) {
-    val result : Boolean
-        get() {
-            return setResult()
-        }
+    open var state : Int = -1 //TODO remove yank
+    val result : Boolean = false
     abstract fun setResult(): Boolean
-    override fun toString():
-            String = "($inputList)->$name->${this.setResult()}"
-        .replace("[", "")
-        .replace("]", "")
-        .replace("()->", "")
+    override fun toString(): String = "$name->${this.setResult()}"
 }

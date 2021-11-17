@@ -10,7 +10,7 @@ class NandGate(position: Position,
         var result = true
         val itr = list.iterator()
         while (itr.hasNext()) {
-            result = result.and(itr.next().result)
+            result = result.and(itr.next().setResult())
         }
         return !result
     }

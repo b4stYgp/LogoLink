@@ -11,7 +11,7 @@ class OrGate(position: Position,
         var result = false
         val itr = list.iterator()
         while (itr.hasNext()) {
-            result = result.or(itr.next().result)
+            result = result.or(itr.next().setResult())
         }
         return result
     }

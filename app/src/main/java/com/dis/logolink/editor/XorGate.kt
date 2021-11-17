@@ -7,11 +7,11 @@ class XorGate(position: Position,
 
     override fun setResult(): Boolean {
         val list:MutableList<Component> = inputList
-        var result = inputList[0].result
+        var result = inputList[0].setResult()
         val itr = list.iterator()
         while(itr.hasNext())
         {
-            result = itr.next().result.xor(itr.next().result)
+            result = itr.next().setResult().xor(itr.next().setResult())
         }
         return result
     }

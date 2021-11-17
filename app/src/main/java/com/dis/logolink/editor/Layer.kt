@@ -8,13 +8,20 @@ package com.dis.logolink.editor
  * @param inputList represents all possible inputs to 'Components' of this Layer
  * @param componentNameList is a sequential list of names of 'Components' in this Layer
  */
+
 class Layer(mappingList: MutableList<MutableList<Int>>,
             inputList: MutableList<Component>,
             componentNameList: MutableList<String>,
-            layerIndex: Int)
+            var layerIndex: Int)
 {
 
     val componentList = mutableListOf<Component>()
+
+    override fun toString(): String {
+        var str = "\tlayer$layerIndex:"
+        componentList.forEach(){component ->  str = "$str\n\t\t$component"}
+        return str
+    }
 
     init {
         componentNameList.forEachIndexed() { index, componentName ->
@@ -47,6 +54,8 @@ class Layer(mappingList: MutableList<MutableList<Int>>,
                 "XNOR" -> componentList.add(XnorGate(defaultPosition,
                     componentInputList, defaultName))
                 "XOR" -> componentList.add(XorGate(defaultPosition,
+                    componentInputList, defaultName))
+                "I" -> componentList.add(IdentityGate(defaultPosition,
                     componentInputList, defaultName))
             }
 
