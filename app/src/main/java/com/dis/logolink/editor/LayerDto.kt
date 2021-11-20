@@ -1,3 +1,4 @@
 package com.dis.logolink.editor
 
-data class LayerDto(var componentDtos: MutableList<ComponentDto>? = null)
+data class LayerDto(val mapping: MutableList<MutableList<Int>>,
+                    val components: MutableList<String>) {}

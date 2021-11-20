@@ -1,23 +1,19 @@
 package com.dis.logolink.editor
 
 class OrGate(position: Position,
-             inputList: MutableList<Input>,
+             inputList: MutableList<Component>,
              name: String
 ) : Component(position, inputList, name) {
 
 
     override fun setResult(): Boolean {
-        val list: MutableList<Input> = inputList
+        val list: MutableList<Component> = inputList
         var result = false
         val itr = list.iterator()
         while (itr.hasNext()) {
-            result = result.or(itr.next().value)
+            result = result.or(itr.next().setResult())
         }
         output.value = result
         return result
-    }
-
-    override operator fun not() : NorGate {
-        return NorGate(this.position, this.inputList, "NandGate through !AndGate")
     }
 }

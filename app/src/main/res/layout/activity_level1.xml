@@ -74,6 +74,7 @@
 
     <!-- Output -->
     <ImageView
+        android:id="@+id/level1_output"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/lamp_off"

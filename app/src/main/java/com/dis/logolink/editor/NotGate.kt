@@ -1,15 +1,10 @@
 package com.dis.logolink.editor
 
 open class NotGate(position: Position,
-                   inputList: MutableList<Input>,
+                   inputList: MutableList<Component>,
                    name: String,
 ) : Component(position, inputList, name) {
     override fun setResult(): Boolean {
-        output.value = inputList[0].value.not()
-        return inputList[0].value.not()
-    }
-
-    override operator fun not(): Component {
-        return NotGate(this.position,mutableListOf(!this.inputList[0]),"NotGate through !NotGate")
+        return inputList[0].setResult().not()
     }
 }

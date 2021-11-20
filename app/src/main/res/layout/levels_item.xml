@@ -34,6 +34,7 @@
             android:layout_width="250dp"
             android:layout_height="75dp"
             android:textSize="50sp"
+            android:fontFamily="@font/font_arcadeclassic"
             app:layout_constraintHorizontal_bias="0.4"
             android:gravity="center"
 
