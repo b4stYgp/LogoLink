@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MainActivity GUI -->
+    <string name="app_name">LogoLink</string>
+    <string name="btn_continue">Continuar</string>
+    <string name="btn_levels">Niveles</string>
+    <string name="btn_settings">Configuración</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="logoDescription">Logolink logo</string>
+
+    <!-- LevelsActivity -->
+    <string name="levels_title">¡Elige un nivel!</string>
+    <string name="level_name">Nivel %$i</string>
+
+    <!-- SettingsActivity -->
+    <string name="settings_header">Configuración</string>
+
+    <string name="darkMode_Title">Encender Dark Mode</string>
+    <string name="darkMode_SummaryON">Dark Mode encendido</string>
+    <string name="darkMode_SummaryOFF">Dark Mode apagado</string>
+</resources>

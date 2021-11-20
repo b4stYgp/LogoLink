@@ -7,12 +7,14 @@ import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+
 import com.dis.logolink.editor.*
 import com.dis.logolink.gui.R
 import kotlinx.android.synthetic.main.activity_level1.*
 
 //Hard coded level for testing purposes
 class Level1Activity : AppCompatActivity() {
+
 
     val tmpPosition = Position(0,0)
     val defaultInput1 = IdentityGate(tmpPosition, mutableListOf<Component>(), "Identity0")
@@ -29,6 +31,7 @@ class Level1Activity : AppCompatActivity() {
     private fun ChangeLampImage(lampInput: Boolean, img: ImageButton){
         //Lamp is turned on, 1
         if (lampInput){
+
             img.setBackgroundResource(R.drawable.lamp_on)
         }
         //Lamp is turned off, 0
@@ -36,6 +39,7 @@ class Level1Activity : AppCompatActivity() {
             img.setBackgroundResource(R.drawable.lamp_on)
         }
     }
+
 
     fun checkSolution() {
         //println(level1.layerList.last().componentList)
@@ -50,6 +54,7 @@ class Level1Activity : AppCompatActivity() {
         setContentView(R.layout.activity_level1)
 
         level1_lamp1.setOnClickListener{
+
             ChangeLampImage(defaultInput1.result, level1_lamp1)
             defaultInput1.invert()
             checkSolution()
@@ -118,4 +123,5 @@ class Level1Activity : AppCompatActivity() {
             level1_canvas.background = BitmapDrawable(resources, bitmap)
         }
     }
+
 }*/

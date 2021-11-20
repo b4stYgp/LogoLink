@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.dis.logolink.level.Level1Activity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
