@@ -12,7 +12,9 @@ import com.dis.logolink.models.*
  */
 class LevelMapper() {
 
-    fun levelMapping(defaultI: MutableList<Boolean>, layerDtoList:MutableList<LayerDto>) : Level {
+    fun levelMapping(levelDto: LevelDto) : Level {
+        val defaultI: MutableList<Boolean> = levelDto.default
+        val layerDtoList:MutableList<LayerDto> = levelDto.layers
         val pos = Position(0,0)
         var layerList = mutableListOf<Layer>()
         val defaultInputList = mutableListOf<Component>()

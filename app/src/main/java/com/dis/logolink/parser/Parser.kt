@@ -7,7 +7,7 @@ import java.io.InputStream
 
 class Parser() {
 
-    val mapper = ObjectMapper(YAMLFactory())
+    private val mapper = ObjectMapper(YAMLFactory())
 
     init {
         this.mapper.registerModule(

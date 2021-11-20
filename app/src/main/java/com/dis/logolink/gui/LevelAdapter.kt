@@ -19,6 +19,7 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
         , "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10")
     private var image = R.drawable.levels_chip
 
+
     //View holder class with attributes and init function
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var itemImage: ImageView
@@ -48,6 +49,7 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
     //Set holder attributes
     override fun onBindViewHolder(holder: LevelAdapter.ViewHolder, position: Int) {
+
         holder.itemTitle.text = levelNames[position]
         holder.itemImage.setImageResource(image)
     }
@@ -55,4 +57,5 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
         return levelNames.size
     }
+
 }
