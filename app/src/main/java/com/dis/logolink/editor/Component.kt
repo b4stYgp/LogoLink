@@ -2,32 +2,11 @@ package com.dis.logolink.editor
 
 abstract class Component(
     var position: Position,
-    var inputList: MutableList<Input>,
+    var inputList: MutableList<Component>,
     val name: String
 ) {
-    var result = setResult()
+    open var state : Int = -1 //TODO remove yank
+    val result : Boolean = false
     abstract fun setResult(): Boolean
-    var output = Input(result)
-    abstract operator fun not() : Component
-
-    operator fun plus(input: Input): AndGate {
-        val newInputList = mutableListOf(this.output,input)
-        return AndGate(Position(0,0),newInputList,"AndGate through addition with Input")
-    }
-
-    operator fun plus(component: Component) : AndGate {
-        val newInputList = mutableListOf(this.output,component.output)
-        return AndGate(Position(0,0),newInputList,"AndGate through addition with Component")
-    }
-
-    operator fun times(input: Input) : OrGate {
-        val newInputList = mutableListOf(this.output,input)
-        return OrGate(Position(0,0),newInputList,"AndGate through multiplication with Input")
-    }
-
-    operator fun times(component: Component) : OrGate {
-        val newInputList = mutableListOf(this.output,component.output)
-        return OrGate(Position(0,0),newInputList,"AndGate through multiplication with Component")
-
-    }
+    override fun toString(): String = "$name->${this.setResult()}"
 }
