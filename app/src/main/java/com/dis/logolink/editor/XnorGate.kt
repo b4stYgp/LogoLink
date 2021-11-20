@@ -1,22 +1,19 @@
 package com.dis.logolink.editor
 
 class XnorGate(position: Position,
-               inputList: MutableList<Input>,
+               inputList: MutableList<Component>,
                name: String,
 ) : Component(position, inputList, name) {
 
     override fun setResult(): Boolean {
-        val list:MutableList<Input> = inputList
-        var result = inputList[0].value
+        val list:MutableList<Component> = inputList
+        var result = inputList[0].setResult()
         val itr = list.iterator()
         while(itr.hasNext())
         {
-            result = itr.next().value.xor(itr.next().value)
+            result = itr.next().setResult().xor(itr.next().setResult())
         }
         return !result
     }
 
-    override fun not(): XorGate {
-        return XorGate(this.position, this.inputList,"XorGate through !XnorGate")
-    }
 }

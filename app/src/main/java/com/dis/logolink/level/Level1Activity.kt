@@ -1,4 +1,4 @@
-package com.dis.logolink.level
+/*package com.dis.logolink.level
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -7,29 +7,32 @@ import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
-import androidx.compose.ui.unit.sp
-import com.dis.logolink.editor.AndGate
-import com.dis.logolink.editor.Input
-import com.dis.logolink.editor.Position
+
+import com.dis.logolink.editor.*
 import com.dis.logolink.gui.R
 import kotlinx.android.synthetic.main.activity_level1.*
 
 //Hard coded level for testing purposes
 class Level1Activity : AppCompatActivity() {
-    //Generates input list
-    private fun eingangsListenGenerator(boolList: List<Boolean>): MutableList<Input> {
-        val inputList = mutableListOf<Input>()
-        val itr = boolList.iterator()
-        while (itr.hasNext()) {
-            inputList.add(Input(itr.next()))
-        }
-        return inputList
-    }
+
+
+    val tmpPosition = Position(0,0)
+    val defaultInput1 = IdentityGate(tmpPosition, mutableListOf<Component>(), "Identity0")
+    val defaultInput2 =  IdentityGate(tmpPosition, mutableListOf<Component>(), "Identity1")
+    val defaultInputList = mutableListOf<Component>(defaultInput1, defaultInput2)
+    // level2
+    //val mappingList = mutableListOf(mutableListOf(mutableListOf(0,1), mutableListOf(0)), mutableListOf(mutableListOf(0,1)))
+    //val componentList = mutableListOf(mutableListOf("OR", "NOT"), mutableListOf("AND"))
+
+    val mappingList = mutableListOf(mutableListOf(mutableListOf(0,1)))
+    val componentList = mutableListOf(mutableListOf("AND"))
+    //val level1 = Level(defaultInputList, mappingList, componentList)
 
     private fun ChangeLampImage(lampInput: Boolean, img: ImageButton){
         //Lamp is turned on, 1
         if (lampInput){
-            img.setBackgroundResource(R.drawable.lamp_off)
+
+            img.setBackgroundResource(R.drawable.lamp_on)
         }
         //Lamp is turned off, 0
         else{
@@ -37,37 +40,29 @@ class Level1Activity : AppCompatActivity() {
         }
     }
 
-    private fun RefreshGate(andGate: AndGate){
-        inputList = eingangsListenGenerator(listOf(lamp1Input, lamp2Input,
-        lamp1Input && lamp2Input))
-        this.andGate = AndGate(position, inputList, "AndGate1")
 
-        if (this.andGate.result){
-            level1_output.setBackgroundResource(R.drawable.lamp_on)
-        }
+    fun checkSolution() {
+        //println(level1.layerList.last().componentList)
+        //if (level1.layerList.last().componentList[0].result) {
+          //  level1_output.setImageResource(R.drawable.lamp_on)
+        //}
+        else {level1_output.setImageResource(R.drawable.lamp_off)}
     }
-
-    //Lamp values
-    private var lamp1Input: Boolean = false
-    private var lamp2Input: Boolean = false
-    private var inputList: MutableList<Input> = eingangsListenGenerator(listOf(lamp1Input, lamp2Input,
-        lamp1Input && lamp2Input))
-    private var position = Position(2, 3)
-    private var andGate: AndGate = AndGate(position, inputList, "AndGate1")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_level1)
 
         level1_lamp1.setOnClickListener{
-            ChangeLampImage(lamp1Input, level1_lamp1)
-            lamp1Input = !lamp1Input
-            RefreshGate(andGate)
+
+            ChangeLampImage(defaultInput1.result, level1_lamp1)
+            defaultInput1.invert()
+            checkSolution()
         }
         level1_lamp2.setOnClickListener {
-            ChangeLampImage(lamp2Input, level1_lamp2)
-            lamp2Input = !lamp2Input
-            RefreshGate(andGate)
+            ChangeLampImage(defaultInput2.result, level1_lamp2)
+            defaultInput2.invert()
+            checkSolution()
         }
     }
 
@@ -128,4 +123,5 @@ class Level1Activity : AppCompatActivity() {
             level1_canvas.background = BitmapDrawable(resources, bitmap)
         }
     }
-}
+
+}*/
