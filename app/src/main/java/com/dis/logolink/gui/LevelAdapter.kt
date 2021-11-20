@@ -35,7 +35,7 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
                 //Test activity 1
                 when(it.levelx_name.text) {
                     "Level 1" -> {}
-                    "Level 2" -> {it.context.startActivity(Intent(it.context, LevelActivity::class.java))}
+                    "Level 2" -> {it.context.startActivity(Intent(it.context, LevelActivity::class.java).putExtra("levelname",it.levelx_name.text))}
                 }
 
             }
