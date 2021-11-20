@@ -1,4 +1,4 @@
-package com.dis.logolink.editor
+package com.dis.logolink.models
 
 open class AndGate(position: Position,
                    inputList: MutableList<Component>,
@@ -13,7 +13,6 @@ open class AndGate(position: Position,
         {
             result = result.and(itr.next().setResult())
         }
-        output.value = result
         return result
     }
 }

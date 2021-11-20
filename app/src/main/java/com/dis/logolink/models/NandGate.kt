@@ -1,19 +1,17 @@
-package com.dis.logolink.editor
+package com.dis.logolink.models
 
-class NorGate (position: Position,
+class NandGate(position: Position,
                inputList: MutableList<Component>,
-               name: String
+               name: String,
 ) : Component(position, inputList, name) {
-
 
     override fun setResult(): Boolean {
         val list: MutableList<Component> = inputList
-        var result = false
+        var result = true
         val itr = list.iterator()
         while (itr.hasNext()) {
-            result = result.or(itr.next().setResult())
+            result = result.and(itr.next().setResult())
         }
-        output.value = !result
         return !result
     }
 }

@@ -1,4 +1,7 @@
-package com.dis.logolink.editor
+package com.dis.logolink.parser
+
+import com.dis.logolink.editor.*
+import com.dis.logolink.models.*
 
 /**
  * class Layer represents one column of Components of a Level
@@ -9,21 +12,14 @@ package com.dis.logolink.editor
  * @param componentNameList is a sequential list of names of 'Components' in this Layer
  */
 
-class Layer(mappingList: MutableList<MutableList<Int>>,
-            inputList: MutableList<Component>,
-            componentNameList: MutableList<String>,
-            var layerIndex: Int)
-{
+class LayerMapper(){
 
-    val componentList = mutableListOf<Component>()
+    fun layerMapping(mappingList: MutableList<MutableList<Int>>,
+                     inputList: MutableList<Component>,
+                     componentNameList: MutableList<String>,
+                     layerIndex: Int) : Layer {
+        val componentList = mutableListOf<Component>()
 
-    override fun toString(): String {
-        var str = "\tlayer$layerIndex:"
-        componentList.forEach(){component ->  str = "$str\n\t\t$component"}
-        return str
-    }
-
-    init {
         componentNameList.forEachIndexed() { index, componentName ->
             val componentInputList = mutableListOf<Component>()
             val defaultPosition = Position(index, layerIndex)
@@ -34,7 +30,6 @@ class Layer(mappingList: MutableList<MutableList<Int>>,
             mappingList[index].forEach() { mapping ->
                 componentInputList.add(inputList[mapping])
             }
-
             when (componentName) {
 
                 // TODO fix with dynamic class creation by name.
@@ -60,5 +55,6 @@ class Layer(mappingList: MutableList<MutableList<Int>>,
             }
 
         }
+        return Layer(layerIndex, componentList)
     }
 }

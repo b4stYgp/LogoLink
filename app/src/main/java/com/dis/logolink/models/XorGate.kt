@@ -1,8 +1,8 @@
-package com.dis.logolink.editor
+package com.dis.logolink.models
 
-class XnorGate(position: Position,
-               inputList: MutableList<Component>,
-               name: String,
+class XorGate(position: Position,
+              inputList: MutableList<Component>,
+              name: String,
 ) : Component(position, inputList, name) {
 
     override fun setResult(): Boolean {
@@ -13,8 +13,6 @@ class XnorGate(position: Position,
         {
             result = itr.next().setResult().xor(itr.next().setResult())
         }
-        output.value = !result
-        return !result
+        return result
     }
-
 }

@@ -1,8 +1,8 @@
-package com.dis.logolink.editor
+package com.dis.logolink.models
 
 open class IdentityGate(position: Position,
-                   inputList: MutableList<Component>,
-                   name: String
+                        inputList: MutableList<Component>,
+                        name: String
 ) : Component(position, inputList, name) {
 
     override fun setResult(): Boolean {

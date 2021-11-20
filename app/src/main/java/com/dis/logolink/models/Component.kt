@@ -1,9 +1,9 @@
-package com.dis.logolink.editor
+package com.dis.logolink.models
 
 abstract class Component(
-    var position: Position,
-    var inputList: MutableList<Component>,
-    val name: String
+        var position: Position,
+        var inputList: MutableList<Component>,
+        val name: String
 ) {
     open var state : Int = -1 //TODO remove yank
     val result : Boolean = false

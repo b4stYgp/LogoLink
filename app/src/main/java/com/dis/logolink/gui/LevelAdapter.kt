@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.dis.logolink.editor.LevelEditorActivity
-import com.dis.logolink.level.Level1Activity
+import com.dis.logolink.gui.LevelActivity
+//import com.dis.logolink.level.Level1Activity
 import kotlinx.android.synthetic.main.levels_item.view.*
 
 class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
@@ -34,8 +33,8 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
                 Toast.makeText(it.context, it.levelx_name.text, Toast.LENGTH_LONG).show()
                 //Test activity 1
                 when(it.levelx_name.text) {
-                    "Level 1" -> {it.context.startActivity(Intent(itemView.context,Level1Activity::class.java))}
-                    "Level 2" -> {it.context.startActivity(Intent(it.context,LevelEditorActivity::class.java))}
+                    "Level 1" -> {}
+                    "Level 2" -> {it.context.startActivity(Intent(it.context, LevelActivity::class.java))}
                 }
 
             }

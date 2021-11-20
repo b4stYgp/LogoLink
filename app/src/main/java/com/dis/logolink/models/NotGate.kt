@@ -1,4 +1,4 @@
-package com.dis.logolink.editor
+package com.dis.logolink.models
 
 open class NotGate(position: Position,
                    inputList: MutableList<Component>,

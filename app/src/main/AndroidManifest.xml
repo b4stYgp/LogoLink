@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LogoLink">
         <activity
-            android:name="com.dis.logolink.editor.LevelEditorActivity"
+            android:name=".LevelActivity"
             android:screenOrientation="landscape"
             android:exported="false" />
         <activity

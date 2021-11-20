@@ -1,4 +1,4 @@
-package com.dis.logolink.editor
+package com.dis.logolink.models
 
 class OrGate(position: Position,
              inputList: MutableList<Component>,
@@ -13,7 +13,6 @@ class OrGate(position: Position,
         while (itr.hasNext()) {
             result = result.or(itr.next().setResult())
         }
-        output.value = result
         return result
     }
 }
