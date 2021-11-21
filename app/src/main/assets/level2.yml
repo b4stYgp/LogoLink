@@ -1,0 +1,12 @@
+default: [false, false, false, false, false, false]
+layers:
+  - mapping:    [ [0,1],[1,2],[2,3],[3,4],[5]]
+    components: [  AND , NOR , XOR , AND ,ID ]
+  - mapping:    [   [0,1,4]  ,   [2,3]   ,[4]]
+    components: [     XNOR   ,    XOR    ,ID ]
+  - mapping:    [     [0,1]  ,   [1,2]   ,[2]]
+    components: [      OR    ,     OR    ,ID ]
+  - mapping:    [      [0]   ,    [1]    ,[2]]
+    components: [       NOT  ,  NOT      ,ID ]
+  - mapping:    [         [0,1,2]        ]
+    components: [           OR           ]

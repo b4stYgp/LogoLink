@@ -1,63 +1,96 @@
-/*package com.dis.logolink.level
+package com.dis.logolink.level
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.ImageButton
 import com.dis.logolink.editor.*
 import com.dis.logolink.gui.R
+import com.dis.logolink.parser.LevelDto
+import com.dis.logolink.parser.Parser
 import kotlinx.android.synthetic.main.activity_level1.*
+import kotlin.random.Random
 
-//Hard coded level for testing purposes
+// UPDATE: Dynamically coded level for testing purposes.
+// Only inputs are created dynamically.
 class Level1Activity : AppCompatActivity() {
 
-    val tmpPosition = Position(0,0)
-    val defaultInput1 = IdentityGate(tmpPosition, mutableListOf<Component>(), "Identity0")
-    val defaultInput2 =  IdentityGate(tmpPosition, mutableListOf<Component>(), "Identity1")
-    val defaultInputList = mutableListOf<Component>(defaultInput1, defaultInput2)
-    // level2
-    //val mappingList = mutableListOf(mutableListOf(mutableListOf(0,1), mutableListOf(0)), mutableListOf(mutableListOf(0,1)))
-    //val componentList = mutableListOf(mutableListOf("OR", "NOT"), mutableListOf("AND"))
-
-    val mappingList = mutableListOf(mutableListOf(mutableListOf(0,1)))
-    val componentList = mutableListOf(mutableListOf("AND"))
-    //val level1 = Level(defaultInputList, mappingList, componentList)
-
-    private fun ChangeLampImage(lampInput: Boolean, img: ImageButton){
-        //Lamp is turned on, 1
-        if (lampInput){
-            img.setBackgroundResource(R.drawable.lamp_on)
-        }
-        //Lamp is turned off, 0
-        else{
-            img.setBackgroundResource(R.drawable.lamp_on)
-        }
-    }
-
-    fun checkSolution() {
-        //println(level1.layerList.last().componentList)
-        //if (level1.layerList.last().componentList[0].result) {
-          //  level1_output.setImageResource(R.drawable.lamp_on)
-        //}
-        else {level1_output.setImageResource(R.drawable.lamp_off)}
-    }
+    var level1 = Level(LevelDto(mutableListOf(), mutableListOf()))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_level1)
+        playSound()
 
-        level1_lamp1.setOnClickListener{
-            ChangeLampImage(defaultInput1.result, level1_lamp1)
-            defaultInput1.invert()
-            checkSolution()
+        val levelName="level2" // use level name or number with "level"+levelNo
+        createInputs(levelName) // very scuffed but proof of concept. Creates inputs to click on.
+
+    }
+
+    private fun changeLampImage(lampInput: Boolean, img: ImageButton){
+        when(lampInput) {
+        true -> img.setImageResource(R.drawable.lamp_on)
+        false -> img.setImageResource(R.drawable.lamp_off)
         }
-        level1_lamp2.setOnClickListener {
-            ChangeLampImage(defaultInput2.result, level1_lamp2)
-            defaultInput2.invert()
-            checkSolution()
+    }
+
+    private fun checkSolution() {
+        when(level1.result) {
+            true -> level1_output.setImageResource(R.drawable.lamp_on)
+            false -> level1_output.setImageResource(R.drawable.lamp_off)
+        }
+    }
+
+    private fun playSound() {
+
+        val trackList = mutableListOf(R.raw.clarity, R.raw.crack, R.raw.daddy, R.raw.fuck, R.raw.orbit, R.raw.milk)
+        var index = Random.nextInt(0, trackList.size-1)
+        var mMediaPlayer = MediaPlayer.create(this, trackList[index])
+
+        mMediaPlayer.setOnCompletionListener {
+            it.selectTrack(index)
+            when(index>0) {
+                true -> index -= 1
+                false -> index = trackList.size-1
+            }
+
+            mMediaPlayer = MediaPlayer.create(this, trackList[index])
+            mMediaPlayer.start()
+        }
+
+        mMediaPlayer.start()
+    }
+
+    private fun createInputs(levelName: String) {
+
+        val level1Dto = Parser().parse(applicationContext, "$levelName.yml")
+        this.level1 = Level(level1Dto!!)
+        level1.defaultInputList.forEachIndexed(){ index, input ->
+
+            val lamp = ImageButton(this)
+            val displayWidth = resources.displayMetrics.widthPixels
+
+            lamp.setImageResource(R.drawable.lamp_off)
+            lamp.setOnClickListener{
+                changeLampImage((!input).setResult(), lamp)
+                println(level1)
+                checkSolution() // should be removed and replaced by changeLampImage
+            }
+
+            lamp.layoutParams = ViewGroup.LayoutParams(
+                (displayWidth / 2),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            lamp.rotation = 90/5F * index // THIS IS WHY WE CANNOT HAVE NICE THINGS!
+            // in order to make all views 'clickable', rotate them to create a offset.
+            // no idea how to display views side by side programmatically.
+            root_layout.addView(lamp)
         }
     }
 
@@ -66,8 +99,8 @@ class Level1Activity : AppCompatActivity() {
         if(hasFocus){
             //Screen size
             val displayMetrics = this.resources.displayMetrics
-            var screenWidth = displayMetrics.widthPixels
-            var screenHeight = displayMetrics.heightPixels
+            val screenWidth = displayMetrics.widthPixels
+            val screenHeight = displayMetrics.heightPixels
 
             //Bitmap & Canvas
             val bitmap: Bitmap = Bitmap.createBitmap(
@@ -81,41 +114,7 @@ class Level1Activity : AppCompatActivity() {
                 strokeCap = Paint.Cap.SQUARE
             }
 
-            val list = mutableListOf<Float>()
-
-            //Lamp1 -> AND
-            list.add(level1_lamp1.right.toFloat())
-            list.add(level1_lamp1.bottom.toFloat())
-            list.add(level1_and1.left.toFloat())
-            list.add(level1_and1.top.toFloat() + (level1_and1.height * 0.5F))
-
-            //Lamp2 -> AND
-            list.add(level1_lamp2.right.toFloat())
-            list.add(level1_lamp2.bottom.toFloat())
-            list.add(level1_and1.left.toFloat())
-            list.add(level1_and1.bottom.toFloat() - (level1_and1.height * 0.5F))
-
-            //AND -> Output
-            list.add(level1_and1.right.toFloat())
-            list.add(level1_and1.bottom.toFloat()
-            - (level1_and1.height * 0.5).toFloat())
-            list.add(level1_output.left.toFloat())
-            list.add(level1_output.bottom.toFloat()
-            - (level1_output.height * 0.5F))
-
-            //Draw lines
-            canvas.drawLines(list.toFloatArray(), paint)
-
-            //Rectangle
-//            var shapeDrawable = ShapeDrawable(RectShape())
-//            shapeDrawable.setBounds(level1_and1.left,
-//                level1_and1.top,
-//                level1_and1.right,
-//                level1_and1.bottom
-//            )
-//            shapeDrawable.paint.setColor(ContextCompat.getColor(this, R.color.black))
-//            shapeDrawable.draw(canvas)
             level1_canvas.background = BitmapDrawable(resources, bitmap)
         }
     }
-}*/
+}

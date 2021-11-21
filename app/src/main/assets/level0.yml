@@ -1,8 +1,6 @@
-default: [true, true, true]
+default: [false, false]
 layers:
-  - mapping: [[0,1],[0],[0,1,2]]
-    components: [OR,NOT,AND]
-  - mapping: [[0,1],[2]]
-    components: [XOR,NOT]
-  - mapping: [[0,1]]
-    components: [AND]
+  - mapping:    [[0],[1]]
+    components: [ I,  I ]
+  - mapping:    [[0,  1]]
+    components: [  AND  ]

@@ -1,32 +1,31 @@
 package com.dis.logolink.editor
 
+import com.dis.logolink.editor.gates.*
+
 /**
  * class Layer represents one column of Components of a Level
  * @param mappingList represents the mapping of inputs to 'Components'.
- * element of 'mappingList' is a 'MutableList' of 'inputList' indices.
- * element's index acts as a foreign key to a 'Component' with the same index in 'ComponentList'.
  * @param inputList represents all possible inputs to 'Components' of this Layer
  * @param componentNameList is a sequential list of names of 'Components' in this Layer
  */
-
-class Layer(mappingList: MutableList<MutableList<Int>>,
-            inputList: MutableList<Component>,
+class Layer(var mappingList: MutableList<MutableList<Int>>,
             componentNameList: MutableList<String>,
+            inputList: MutableList<Component>,
             var layerIndex: Int)
 {
 
     val componentList = mutableListOf<Component>()
 
     override fun toString(): String {
-        var str = "\tlayer$layerIndex:"
-        componentList.forEach(){component ->  str = "$str\n\t\t$component"}
-        return str
+         return this.mappingList.toString()
+            .replace("[","    ")
+            .replace("]"," -> ") +
+            "$this.componentList"
     }
 
     init {
         componentNameList.forEachIndexed() { index, componentName ->
             val componentInputList = mutableListOf<Component>()
-            val defaultPosition = Position(index, layerIndex)
             val defaultName = "$componentName$index$layerIndex"
 
             // index based mapping of input 'Components' to 'Components'
@@ -36,27 +35,30 @@ class Layer(mappingList: MutableList<MutableList<Int>>,
             }
 
             when (componentName) {
-
-                // TODO fix with dynamic class creation by name.
-
-                "AND" -> componentList.add(AndGate(defaultPosition,
-                    componentInputList, defaultName))
-                "ID" -> componentList.add(AndGate(defaultPosition,
-                    componentInputList, defaultName))
-                "NAND" -> componentList.add(AndGate(defaultPosition,
-                    componentInputList, defaultName))
-                "NOR" -> componentList.add(NorGate(defaultPosition,
-                    componentInputList, defaultName))
-                "NOT" -> componentList.add(NotGate(defaultPosition,
-                    componentInputList, defaultName))
-                "OR" -> componentList.add(OrGate(defaultPosition,
-                    componentInputList, defaultName))
-                "XNOR" -> componentList.add(XnorGate(defaultPosition,
-                    componentInputList, defaultName))
-                "XOR" -> componentList.add(XorGate(defaultPosition,
-                    componentInputList, defaultName))
-                "I" -> componentList.add(IdentityGate(defaultPosition,
-                    componentInputList, defaultName))
+                "AND" -> componentList.add(
+                    AndGate(componentInputList)
+                )
+                "ID" -> componentList.add(
+                    IdentityGate(componentInputList)
+                )
+                "NAND" -> componentList.add(
+                    NandGate(componentInputList)
+                )
+                "NOR" -> componentList.add(
+                    NorGate(componentInputList)
+                )
+                "NOT" -> componentList.add(
+                    NotGate(componentInputList)
+                )
+                "OR" -> componentList.add(
+                    OrGate(componentInputList)
+                )
+                "XNOR" -> componentList.add(
+                    XnorGate(componentInputList)
+                )
+                "XOR" -> componentList.add(
+                    XorGate(componentInputList)
+                )
             }
 
         }

@@ -1,12 +1,16 @@
 package com.dis.logolink.gui
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.dis.logolink.level.Level1Activity
+import kotlinx.android.synthetic.main.levels_item.view.*
 
 class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
@@ -27,9 +31,11 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
             //On click listener
             itemView.setOnClickListener{
                 Toast.makeText(itemView.context, "Clicked", Toast.LENGTH_LONG).show()
+                // pass itemTitle.text as level name to LevelActivity? Try to show proof of concept
             }
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LevelAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.levels_item, parent, false)
