@@ -24,7 +24,7 @@ class ViewLoader() {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
         input.setImageResource(R.drawable.lamp_off)
-        var constraintLayout : ConstraintLayout = LevelLayout
+        //var constraintLayout : ConstraintLayout = LevelLayout
         return input
     }
 
