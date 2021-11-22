@@ -1,12 +1,8 @@
 package com.dis.logolink.models
 
-abstract class Component(
-        var position: Position,
-        var inputList: MutableList<Component>,
-        val name: String
-) {
-    open var state : Int = -1 //TODO remove yank
-    val result : Boolean = false
+abstract class Component(var inputList: MutableList<Component>) {
+    var result = false
     abstract fun setResult(): Boolean
-    override fun toString(): String = "$name->${this.setResult()}"
+    abstract operator fun not() : Component
+    override fun toString(): String = "[${this::class.java.simpleName}, ${if (this.setResult()) 1 else 0}]"
 }

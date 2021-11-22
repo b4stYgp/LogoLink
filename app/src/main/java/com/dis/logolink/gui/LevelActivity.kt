@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 import com.dis.logolink.editor.ViewLoader
 import com.dis.logolink.models.IdentityGate
+import com.dis.logolink.models.InputGate
 import com.dis.logolink.models.Level
 import com.dis.logolink.parser.LevelDto
 import com.dis.logolink.parser.LevelMapper
@@ -43,7 +44,7 @@ class LevelActivity() : AppCompatActivity() {
         val buttonList = mutableListOf<ImageButton>()
         val inputIterator = viewLoader.level.defaultInputList.iterator()
         while(inputIterator.hasNext()) {
-            buttonList.add(viewLoader.createView(inputIterator.next() as IdentityGate,this))
+            buttonList.add(viewLoader.createView(inputIterator.next() as InputGate,this))
         }
 
         val btnIterator = buttonList.iterator()

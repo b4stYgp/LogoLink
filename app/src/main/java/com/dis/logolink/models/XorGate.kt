@@ -1,18 +1,16 @@
 package com.dis.logolink.models
 
-class XorGate(position: Position,
-              inputList: MutableList<Component>,
-              name: String,
-) : Component(position, inputList, name) {
+class XorGate(inputList: MutableList<Component>) : Component(inputList) {
 
     override fun setResult(): Boolean {
-        val list:MutableList<Component> = inputList
-        var result = inputList[0].setResult()
-        val itr = list.iterator()
-        while(itr.hasNext())
-        {
-            result = itr.next().setResult().xor(itr.next().setResult())
+        result = false
+        inputList.forEach(){
+            result = result.xor(it.setResult())
         }
         return result
+    }
+
+    override fun not(): XnorGate {
+        return XnorGate(inputList)
     }
 }

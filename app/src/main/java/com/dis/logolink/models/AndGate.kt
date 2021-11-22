@@ -1,18 +1,16 @@
 package com.dis.logolink.models
 
-open class AndGate(position: Position,
-                   inputList: MutableList<Component>,
-                   name: String,
-) : Component(position, inputList, name) {
+open class AndGate(inputList: MutableList<Component>) : Component(inputList) {
 
     override fun setResult(): Boolean {
-        val list:MutableList<Component> = inputList
-        var result = true
-        val itr = list.iterator()
-        while(itr.hasNext())
-        {
-            result = result.and(itr.next().setResult())
+        result = true
+        inputList.forEach(){
+            result = result.and(it.setResult())
         }
         return result
+    }
+
+    override operator fun not() : NandGate {
+        return NandGate(inputList)
     }
 }

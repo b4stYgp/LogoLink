@@ -15,15 +15,13 @@ import com.dis.logolink.models.*
 class LayerMapper(){
 
     fun layerMapping(mappingList: MutableList<MutableList<Int>>,
-                     inputList: MutableList<Component>,
                      componentNameList: MutableList<String>,
+                     inputList: MutableList<Component>,
                      layerIndex: Int) : Layer {
         val componentList = mutableListOf<Component>()
 
         componentNameList.forEachIndexed() { index, componentName ->
             val componentInputList = mutableListOf<Component>()
-            val defaultPosition = Position(index, layerIndex)
-            val defaultName = "$componentName$index$layerIndex"
 
             // index based mapping of input 'Components' to 'Components'
             // allows the use of 'componentList' as the 'inputList' of another 'Layer'
@@ -34,24 +32,14 @@ class LayerMapper(){
 
                 // TODO fix with dynamic class creation by name.
 
-                "AND" -> componentList.add(AndGate(defaultPosition,
-                    componentInputList, defaultName))
-                "ID" -> componentList.add(AndGate(defaultPosition,
-                    componentInputList, defaultName))
-                "NAND" -> componentList.add(AndGate(defaultPosition,
-                    componentInputList, defaultName))
-                "NOR" -> componentList.add(NorGate(defaultPosition,
-                    componentInputList, defaultName))
-                "NOT" -> componentList.add(NotGate(defaultPosition,
-                    componentInputList, defaultName))
-                "OR" -> componentList.add(OrGate(defaultPosition,
-                    componentInputList, defaultName))
-                "XNOR" -> componentList.add(XnorGate(defaultPosition,
-                    componentInputList, defaultName))
-                "XOR" -> componentList.add(XorGate(defaultPosition,
-                    componentInputList, defaultName))
-                "I" -> componentList.add(IdentityGate(defaultPosition,
-                    componentInputList, defaultName))
+                "AND" -> componentList.add(AndGate(componentInputList))
+                "ID" -> componentList.add(IdentityGate(componentInputList))
+                "NAND" -> componentList.add(NandGate(componentInputList))
+                "NOR" -> componentList.add(NorGate(componentInputList))
+                "NOT" -> componentList.add(NotGate(componentInputList))
+                "OR" -> componentList.add(OrGate(componentInputList))
+                "XNOR" -> componentList.add(XnorGate(componentInputList))
+                "XOR" -> componentList.add(XorGate(componentInputList))
             }
 
         }

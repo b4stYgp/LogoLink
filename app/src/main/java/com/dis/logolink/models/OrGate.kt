@@ -1,18 +1,15 @@
 package com.dis.logolink.models
 
-class OrGate(position: Position,
-             inputList: MutableList<Component>,
-             name: String
-) : Component(position, inputList, name) {
-
+class OrGate(inputList: MutableList<Component>,) : Component(inputList) {
 
     override fun setResult(): Boolean {
-        val list: MutableList<Component> = inputList
-        var result = false
-        val itr = list.iterator()
-        while (itr.hasNext()) {
-            result = result.or(itr.next().setResult())
+        result = false
+        inputList.forEach(){
+            result = result.or(it.setResult())
         }
         return result
     }
+
+    override operator fun not() : NorGate {
+        return NorGate(inputList)}
 }

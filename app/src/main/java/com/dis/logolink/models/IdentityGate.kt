@@ -1,24 +1,13 @@
 package com.dis.logolink.models
 
-open class IdentityGate(position: Position,
-                        inputList: MutableList<Component>,
-                        name: String
-) : Component(position, inputList, name) {
+open class IdentityGate(inputList: MutableList<Component>) : Component(inputList) {
 
     override fun setResult(): Boolean {
-
-        when (state) {
-            -1 -> return false
-            1 -> return true
-            0 -> if (inputList.size == 1) {
-                return inputList[0].setResult()
-            }
-        }
-        throw Exception("Unknown 'IdentityGate' state: $state")
+        assert(inputList.size == 1)
+        return inputList[0].setResult()
     }
 
-    fun invert(): IdentityGate {
-        this.state = -this.state
-        return this
+    override operator fun not() : NotGate {
+        return NotGate(inputList)
     }
 }

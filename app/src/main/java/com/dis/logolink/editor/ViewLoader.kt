@@ -11,6 +11,7 @@ import androidx.core.view.updateLayoutParams
 import com.dis.logolink.gui.R
 import com.dis.logolink.models.Component
 import com.dis.logolink.models.IdentityGate
+import com.dis.logolink.models.InputGate
 import com.dis.logolink.models.Level
 import com.dis.logolink.parser.Parser
 import kotlinx.android.synthetic.main.activity_level.*
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_level.*
 class ViewLoader() {
     lateinit var level: Level
 
-    fun createView(component: IdentityGate, context: Context) : ImageButton{
+    fun createView(component: InputGate, context: Context) : ImageButton{
         val input = ImageButton(context)
         input.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,

@@ -1,10 +1,14 @@
 package com.dis.logolink.models
 
-open class NotGate(position: Position,
-                   inputList: MutableList<Component>,
-                   name: String,
-) : Component(position, inputList, name) {
+open class NotGate(inputList: MutableList<Component>) : Component(inputList) {
+
     override fun setResult(): Boolean {
-        return inputList[0].setResult().not()
+        assert(inputList.size == 1)
+        result = !inputList[0].result
+        return result
+    }
+
+    override operator fun not(): Component {
+        return NotGate(inputList)
     }
 }
