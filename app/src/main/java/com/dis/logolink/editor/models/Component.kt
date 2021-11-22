@@ -1,4 +1,4 @@
-package com.dis.logolink.models
+package com.dis.logolink.editor.models
 
 abstract class Component(var inputList: MutableList<Component>) {
     var result = false

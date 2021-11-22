@@ -1,4 +1,4 @@
-package com.dis.logolink.models
+package com.dis.logolink.editor.models
 
 class OrGate(inputList: MutableList<Component>,) : Component(inputList) {
 

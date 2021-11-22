@@ -1,4 +1,4 @@
-package com.dis.logolink.models
+package com.dis.logolink.editor.models
 
 class NorGate (inputList: MutableList<Component>) : Component(inputList) {
 

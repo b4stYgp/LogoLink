@@ -1,7 +1,7 @@
 package com.dis.logolink.parser
 
 import com.dis.logolink.editor.*
-import com.dis.logolink.models.*
+import com.dis.logolink.editor.models.*
 
 /**
  * class Layer represents one column of Components of a Level

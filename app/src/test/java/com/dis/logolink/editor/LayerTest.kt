@@ -1,6 +1,5 @@
 package com.dis.logolink.editor
-import com.dis.logolink.models.IdentityGate
-import com.dis.logolink.models.InputGate
+import com.dis.logolink.editor.models.InputGate
 import com.dis.logolink.parser.LevelDto
 import com.dis.logolink.parser.LevelMapper
 import com.dis.logolink.parser.Parser

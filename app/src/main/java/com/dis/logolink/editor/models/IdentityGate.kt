@@ -1,4 +1,4 @@
-package com.dis.logolink.models
+package com.dis.logolink.editor.models
 
 open class IdentityGate(inputList: MutableList<Component>) : Component(inputList) {
 
