@@ -30,6 +30,9 @@
             app:layout_constraintVertical_chainStyle="spread" />
 
         <!--  Continue button  /-->
+
+        <!--  Levels button  /-->
+
         <Button
             android:id="@+id/btn_continue"
             android:layout_width="match_parent"
@@ -37,16 +40,16 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
-            android:text="@string/btn_continue"
             android:fontFamily="@font/font_arcadeclassic"
+            android:text="@string/btn_continue"
             android:textSize="30sp"
 
             app:layout_constraintBottom_toTopOf="@+id/btn_levels"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_logolink_logo" />
 
-        <!--  Levels button  /-->
         <Button
             android:id="@+id/btn_levels"
             android:layout_width="match_parent"
