@@ -41,29 +41,34 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
 
     fun mapLevelToView(){
-        generateIdListsFromLevel()
-        createInputView()
-        createLayerViewList()
-        createGuidelines()
+        generateIdListsFromLevel() //ok
+        createInputView() //ok
+        createLayerViewList() //unused image size params too big, ok
+        createGuidelines() //exception caused by float conversion
         setInputConstraints()
         setComponentConstraints()
     }
 
+    //Creates guidelines for each layer
     private fun createGuidelines() {
         var myfloat = 0.0F
         for(layer in level.layerList) {
             val layerIndex = level.layerList.indexOf(layer)
             val guideline = Guideline(context)
-            guideline.layoutParams = ConstraintLayout.LayoutParams(
-                WRAP_CONTENT,
-                WRAP_CONTENT
-            )
+            //Set constraint parameters
+            val constraintParams = ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            constraintParams.orientation = ConstraintLayout.LayoutParams.VERTICAL
+            guideline.layoutParams = constraintParams
+
             guideline.id = glViewIds[layerIndex]
             val index = level.layerList.indexOf(layer)
             val layerSize = level.layerList[index].componentList.size
-            val df = DecimalFormat("#.##")
 
-            myfloat = df.format(1 / layerSize.toFloat()).toFloat()
+            // !!! float conversion causes runtime exception !!!
+            // val df = DecimalFormat("#.##")
+            // myfloat = df.format(1 / layerSize.toFloat()).toFloat()
+
+            myfloat = (1 / layerSize.toFloat())
 
             if (index == 0) {
                 guideline.setGuidelineBegin((myfloat*getScreenWidth()).toInt())
@@ -74,19 +79,19 @@ class ViewLoader(val activity: Activity,val context: Context) {
             }
             else if(index == level.layerList.size-1)
                 guideline.setGuidelineBegin((2*index*myfloat*getScreenWidth()).toInt())
-                guideline.setGuidelinePercent(myfloat)
+            guideline.setGuidelinePercent(myfloat)
             guidelineList.add(guideline)
             activity.LevelLayout.addView(guideline)
         }
     }
     //Left
     //constraintSet.connect(currentObject.id,
-   // ConstraintSet.LEFT, leftObject.id, 0)
+    // ConstraintSet.LEFT, leftObject.id, 0)
 
 
 
 
-
+    //Creates gate element
     private fun createLayerViewList() {
         for (layer in level.layerList) {
             val compViewList = mutableListOf<ImageView>()
@@ -99,13 +104,15 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
     }
 
+    //Creates input buttons
     private fun createInputView(){
         for (component in level.defaultInputList) {
             val input = ImageButton(context)
             input.layoutParams = LinearLayout.LayoutParams(
-                100,
-                100
+                    100,
+                    100
             )
+            //Image
             if (component.setResult())
                 input.setImageResource(R.drawable.lamp_on)
             else
@@ -120,13 +127,14 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 }
             }
 
+            //get corresponding id
             input.id = btnViewIds[level.defaultInputList.indexOf(component)]
             inputBtnViewList.add(input)
             activity.LevelLayout.addView(input)
         }
     }
 
-
+    //Generates ids for each and every component present on the screen
     private fun generateIdListsFromLevel(){
         var btnIds = mutableListOf<Int>()
         level.defaultInputList.forEach(){
@@ -153,8 +161,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
     }
 
 
-
+    //Create component image
     private fun createComponentView(component: Component,id: Int) : ImageView {
+        //get image
         val componentView = ImageView(context)
         val className = component::class.java.simpleName
         when(className.substringBefore("Gate")){
@@ -170,13 +179,16 @@ class ViewLoader(val activity: Activity,val context: Context) {
             else->{}
         }
 
+        //determine size
         var heightMod = 0
         level.layerList.forEach(){
             if(it.componentList.contains(component))
                 heightMod = it.componentList.size
         }
+        // === Too big! -> AND Gate H:360, W:570 ===
         val height = getScreenHeight() / heightMod
         val width = getScreenWidth()/(level.layerList.size+1)
+        // ===
 
         componentView.layoutParams = LinearLayout.LayoutParams(250,175)
         componentView.id = id
@@ -192,6 +204,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
             var index = inputBtnViewList.indexOf(it)
             constraintSet.connect(it.id,ConstraintSet.RIGHT,guidelineList[0].id,ConstraintSet.LEFT)
             constraintSet.connect(it.id,ConstraintSet.LEFT,constId,ConstraintSet.LEFT)
+            //Top/Bottom constraints
             if(index == 0){
                 constraintSet.connect(it.id,ConstraintSet.TOP,constId,ConstraintSet.TOP)
                 constraintSet.connect(it.id,ConstraintSet.BOTTOM,inputBtnViewList[index+1].id,ConstraintSet.TOP)
@@ -206,14 +219,13 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
     }
 
-
-
+    //Get screen width - OK
     @SuppressLint("ObsoleteSdkInt")
     private fun getScreenWidth(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val windowMetrics = activity.windowManager.currentWindowMetrics
             val insets: Insets = windowMetrics.windowInsets
-                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
             windowMetrics.bounds.width() - insets.left - insets.right
         } else {
             val displayMetrics = DisplayMetrics()
@@ -222,12 +234,13 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
     }
 
+    //Get screen height - OK
     @SuppressLint("ObsoleteSdkInt")
     private fun getScreenHeight(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val windowMetrics = activity.windowManager.currentWindowMetrics
             val insets: Insets = windowMetrics.windowInsets
-                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
             windowMetrics.bounds.height() - insets.top - insets.bottom
         } else {
             val displayMetrics = DisplayMetrics()

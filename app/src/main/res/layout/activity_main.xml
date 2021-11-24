@@ -21,7 +21,9 @@
             android:layout_marginTop="25dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/logoDescription"
-            android:src="@drawable/image_android_development"
+            android:src="@drawable/logolink_export"
+            android:scaleX="2"
+            android:scaleY="2"
 
             app:layout_constraintBottom_toTopOf="@id/btn_continue"
             app:layout_constraintLeft_toLeftOf="parent"
