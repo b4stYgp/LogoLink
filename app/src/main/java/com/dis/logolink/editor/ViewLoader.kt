@@ -7,8 +7,6 @@ import android.graphics.Insets
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowInsets
 import android.widget.ImageButton
@@ -17,16 +15,12 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
-import androidx.core.view.forEach
 import com.dis.logolink.editor.models.Component
 
 import com.dis.logolink.gui.R
-import com.dis.logolink.editor.models.InputGate
 import com.dis.logolink.editor.models.Layer
 import com.dis.logolink.editor.models.Level
-import com.dis.logolink.gui.LevelActivity
 import kotlinx.android.synthetic.main.activity_level.*
-import java.text.DecimalFormat
 
 class ViewLoader(val activity: Activity,val context: Context) {
     lateinit var level: Level
@@ -38,7 +32,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
     var layerViewList= mutableListOf<MutableList<ImageView>>()
     var guidelineList = mutableListOf<Guideline>()
     val constraintSet = ConstraintSet()
-
+    //Dictionary for drawing positions
+    val inputDictionary = mutableMapOf<Int, MutableList<Component>>()
+    val inputViewDictionary = mutableMapOf<Int, Int>()
 
     fun mapLevelToView(){
         generateIdListsFromLevel()
@@ -47,6 +43,71 @@ class ViewLoader(val activity: Activity,val context: Context) {
         createGuidelines()
         setInputConstraints()
         setComponentConstraints()
+        mapGateInputs()
+        drawLines()
+    }
+
+    //Maps dictionary
+    //Dictionary example after function:
+    //[key, value]
+    //[AND.view.id, OR.view.id], [AND.view.id, AND.view.id]
+    //Meaning (pair #1): OR Gate Output -> AND Gate Input
+    private fun mapGateInputs() {
+        var key: Int
+        var value: Int? = null
+        var layerIndex: Int?= null
+        inputDictionary.forEach()
+        {
+            key = it.key
+            //For each input list entry...
+            it.value.forEach()
+            {
+                val componentTemp = it
+                //Input gate
+                if(it.toString().contains("Input", true)){
+                    value = inputBtnViewList[
+                            level.defaultInputList.indexOf(it)].id
+                }
+                //Logic gate
+                else{
+                    //Corresponding layer found? If so, then and set value to gate id
+                    if(layerIndex != null){
+                        level.layerList[layerIndex!!].componentList.forEach(){
+                            if(it == componentTemp){
+                                value = layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(it)].id
+                            }
+                        }
+                    }
+                    //Search for gate layer and set value to gate id
+                    else {
+                        level.layerList.forEach() {
+                            layerIndex = level.layerList.indexOf(it)
+                            it.componentList.forEach() {
+                                if (it == componentTemp) {
+                                    value =
+                                        layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
+                                            it
+                                        )].id
+                                }
+                            }
+                        }
+                    }
+                }
+                //Add to dictionary if found
+                if(value != null){
+                    inputViewDictionary.put(key, value!!)
+                }
+                //Reset value
+                value = null
+            }
+            //Reset layer index
+            layerIndex = null
+        }
+    }
+
+    //Draws each line from gate to gate
+    private fun drawLines() {
+
     }
 
     //Creates guidelines for each layer
@@ -82,7 +143,12 @@ class ViewLoader(val activity: Activity,val context: Context) {
             val indexLayer = level.layerList.indexOf(layer)
             layer.componentList.forEach() {
                 val indexComponent = layer.componentList.indexOf(it)
-                compViewList.add(createComponentView(it,cmpViewIdsList[indexLayer][indexComponent]))
+                val componentIndex = cmpViewIdsList[indexLayer][indexComponent]
+
+                compViewList.add(createComponentView(it, componentIndex))
+
+                //Fill dictionary for mapping
+                inputDictionary.put(componentIndex, it.inputList)
             }
             layerViewList.add(compViewList)
         }
