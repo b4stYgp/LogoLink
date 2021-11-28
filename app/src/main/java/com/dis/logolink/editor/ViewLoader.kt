@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Insets
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowInsets
 import android.widget.ImageButton
@@ -20,7 +22,9 @@ import com.dis.logolink.editor.models.Component
 import com.dis.logolink.gui.R
 import com.dis.logolink.editor.models.Layer
 import com.dis.logolink.editor.models.Level
+import com.dis.logolink.gui.CanvasLoader
 import kotlinx.android.synthetic.main.activity_level.*
+import kotlinx.android.synthetic.main.activity_level.view.*
 
 class ViewLoader(val activity: Activity,val context: Context) {
     lateinit var level: Level
@@ -44,7 +48,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
         setInputConstraints()
         setComponentConstraints()
         mapGateInputs()
-        drawLines()
+        //drawLines()
     }
 
     //Maps dictionary
@@ -106,8 +110,19 @@ class ViewLoader(val activity: Activity,val context: Context) {
     }
 
     //Draws each line from gate to gate
-    private fun drawLines() {
-
+    fun drawLines() {
+        val canvasLoader = CanvasLoader(getScreenWidth(), getScreenHeight())
+        //EXCEPTION
+        val bitmap = canvasLoader.calculateLinePositions(inputViewDictionary, activity)
+        val background = ImageView(context)
+        val params = background.layoutParams.apply {
+            height = MATCH_PARENT
+            width = MATCH_PARENT
+        }
+        val backgrndID = View.generateViewId()
+        background.id = backgrndID
+        background.background = BitmapDrawable(activity.resources, bitmap)
+        activity.addContentView(background, params)
     }
 
     //Creates guidelines for each layer

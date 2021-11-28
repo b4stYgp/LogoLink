@@ -29,13 +29,13 @@ import androidx.annotation.NonNull
 
 
 class LevelActivity() : AppCompatActivity() {
-
+lateinit var viewLoader: ViewLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_level)
         val field = assets.list("")
-        val viewLoader = ViewLoader(this,this)
+        viewLoader = ViewLoader(this,this)
         //load Level with Mapper and Parser
         val regex = """level(\d{1}|\d{2}).yml""".toRegex()
         field!!.forEach {
@@ -47,6 +47,11 @@ class LevelActivity() : AppCompatActivity() {
         }
 
         viewLoader.mapLevelToView()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        viewLoader.drawLines()
     }
 }
 
