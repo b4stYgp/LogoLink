@@ -41,11 +41,10 @@ lateinit var viewLoader: ViewLoader
         field!!.forEach {
             if(it.matches(regex)) {
                 if (it.contains(intent.extras?.get("levelname").toString().filter { it.isDigit() })){
-                    viewLoader.level = LevelMapper().levelMapping(Parser().parse(assets.open(it)) as LevelDto)
+                    viewLoader.level = LevelMapper().levelMapping(Parser().parse(assets.open(it))!!)
                 }
             }
         }
-
         viewLoader.mapLevelToView()
     }
 
@@ -53,6 +52,7 @@ lateinit var viewLoader: ViewLoader
         super.onWindowFocusChanged(hasFocus)
         viewLoader.drawLines()
     }
+
 }
 
 

@@ -31,7 +31,6 @@ class ViewLoader(val activity: Activity,val context: Context) {
     lateinit private var btnViewIds : List<Int>
     lateinit private var cmpViewIdsList : List<List<Int>>
     lateinit private var glViewIds : List<Int>
-    lateinit var constraintSets: MutableList<ConstraintSet>
     var inputBtnViewList =  mutableListOf<ImageButton>()
     var layerViewList= mutableListOf<MutableList<ImageView>>()
     var guidelineList = mutableListOf<Guideline>()
@@ -115,10 +114,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
         //EXCEPTION
         val bitmap = canvasLoader.calculateLinePositions(inputViewDictionary, activity)
         val background = ImageView(context)
-        val params = background.layoutParams.apply {
-            height = MATCH_PARENT
-            width = MATCH_PARENT
-        }
+        background.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        val params = background.layoutParams
         val backgrndID = View.generateViewId()
         background.id = backgrndID
         background.background = BitmapDrawable(activity.resources, bitmap)
@@ -237,18 +234,24 @@ class ViewLoader(val activity: Activity,val context: Context) {
         //get image
         val componentView = ImageView(context)
         val className = component::class.java.simpleName
+        var imageRessource : Any
+        if(component.setResult())
+            imageRessource = R.drawable.image_android_development_on
+        else
+            imageRessource = R.drawable.image_android_development_off
         when(className.substringBefore("Gate")){
-            "And"->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Nand"->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Or" ->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Nor"->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Xor"->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Xnor"->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Not"->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Identity"->{componentView.setImageResource(R.drawable.image_android_development)}
-            "Input"->{componentView.setImageResource(R.drawable.image_android_development)}
+            "And"->{componentView.setImageResource(imageRessource)}
+            "Nand"->{componentView.setImageResource(imageRessource)}
+            "Or" ->{componentView.setImageResource(imageRessource)}
+            "Nor"->{componentView.setImageResource(imageRessource)}
+            "Xor"->{componentView.setImageResource(imageRessource)}
+            "Xnor"->{componentView.setImageResource(imageRessource)}
+            "Not"->{componentView.setImageResource(imageRessource)}
+            "Identity"->{componentView.setImageResource(imageRessource)}
+            "Input"->{componentView.setImageResource(imageRessource)}
             else->{}
         }
+       
 
         //determine size
         var heightMod = 0

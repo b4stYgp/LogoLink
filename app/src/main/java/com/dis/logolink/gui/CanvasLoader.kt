@@ -2,17 +2,15 @@ package com.dis.logolink.gui
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.view.View
+import kotlinx.android.synthetic.main.activity_level.*
 
 class CanvasLoader(screenWidth: Int, screenHeight: Int) {
     val bitmap: Bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888)
     val canvas: Canvas = Canvas(bitmap)
     var paint: Paint? = null
-    lateinit var positions: MutableList<Float>
+    var positions = mutableListOf<Float>()
 
     fun <T>calculateLinePositions(elementList: MutableMap<T, T>, activity: Activity): Bitmap{
         for(element in elementList){
@@ -29,18 +27,33 @@ class CanvasLoader(screenWidth: Int, screenHeight: Int) {
         return bitmap
     }
 
-    //EXCEPTION CAN'T GET RIGHT VAL (NULL)
+
     fun setStartPosition(element: View){
+        //Position on Screen
+        var pos = element.getLocationOnScreen()
+
         //StartX
-        positions.add(element.right.toFloat())
+        positions.add(pos.x.toFloat()) //former Right
         //StartY
-        positions.add(element.right.toFloat() - element.height.toFloat())
+        positions.add(pos.y.toFloat())
     }
 
     fun setEndPostition(element: View) {
+        //Position on Screen
+        var pos = element.getLocationOnScreen()
         //End X
-        positions.add(element.left.toFloat())
+        positions.add(pos.x.toFloat()) //former Left
         //End Y
-        positions.add(element.left.toFloat() - element.height.toFloat())
+        positions.add(pos.y.toFloat())
     }
+
+    fun View.getLocationOnScreen():Point
+    {
+        val location = IntArray(2)
+        this.getLocationOnScreen(location)
+        return Point(location[0],location[1])
+    }
+
 }
+
+
