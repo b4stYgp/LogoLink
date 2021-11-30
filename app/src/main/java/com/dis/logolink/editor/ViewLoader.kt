@@ -167,12 +167,12 @@ class ViewLoader(val activity: Activity,val context: Context) {
     }
 
     //Creates input buttons
-    private fun createInputView(){
+    private fun createInputView() {
         for (component in level.defaultInputList) {
             val input = ImageButton(context)
             input.layoutParams = LinearLayout.LayoutParams(
-                    100,
-                    100
+                100,
+                100
             )
             //Image
             if (component.setResult())
@@ -180,6 +180,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
             else
                 input.setImageResource(R.drawable.lamp_off)
             input.setOnClickListener {
+                val btn = it
                 if (component.setResult()) {
                     input.setImageResource(R.drawable.lamp_off)
                     !level.defaultInputList[level.defaultInputList.indexOf(component)]
@@ -187,8 +188,19 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     input.setImageResource(R.drawable.lamp_on)
                     !level.defaultInputList[level.defaultInputList.indexOf(component)]
                 }
+                //TODO besser nen ChangeListener für die ImageViews als en onClick Event bei den Buttons
+                    //Change ImageView Ressource
+                layerViewList.forEach(){
+                    val layerIndex = layerViewList.indexOf(it)
+                    it.forEach(){
+                        val imageIndex = layerViewList[layerIndex].indexOf(it)
+                        if(level.layerList[layerIndex].componentList[imageIndex].setResult())
+                            it.setImageResource(R.drawable.image_android_development_on)
+                        else
+                            it.setImageResource(R.drawable.image_android_development_off)
+                    }
+                }
             }
-
             //get corresponding id
             input.id = btnViewIds[level.defaultInputList.indexOf(component)]
             inputBtnViewList.add(input)
@@ -251,7 +263,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
             "Input"->{componentView.setImageResource(imageRessource)}
             else->{}
         }
-       
+
 
         //determine size
         var heightMod = 0
