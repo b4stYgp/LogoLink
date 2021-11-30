@@ -85,7 +85,6 @@ class ViewLoader(val activity: Activity,val context: Context) {
                             }
                         }
                     }
-
                     //Corresponding layer found? If so, then and set value to gate id
                     if(layerIndex != null){
                         level.layerList[layerIndex!!].componentList.forEach(){
@@ -111,7 +110,6 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Draws each line from gate to gate
     fun drawLines() {
         val canvasLoader = CanvasLoader(getScreenWidth(), getScreenHeight())
-        //EXCEPTION
         val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
         val background = ImageView(context)
         background.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)

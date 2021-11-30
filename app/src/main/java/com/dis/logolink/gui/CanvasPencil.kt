@@ -14,13 +14,4 @@ class CanvasPencil(val canvas: Canvas, val paint: Paint) {
     fun drawLines(positions: MutableList<Float>){
         canvas.drawLines(positions.toFloatArray(), paint)
     }
-
-    //Draw horizontal line
-    fun horizontalLine(startPosX: Float, startPosY: Float, endPosX: Float, endPosY: Float){
-        canvas.drawLine(startPosX, startPosY, endPosX, endPosY, paint)
-    }
-
-    fun verticalLine(){
-
-    }
 }
