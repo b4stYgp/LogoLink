@@ -14,6 +14,7 @@ import android.view.WindowInsets
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
@@ -246,9 +247,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
         val className = component::class.java.simpleName
         var imageRessource : Any
         if(component.setResult())
-            imageRessource = R.drawable.image_android_development_on
+            imageRessource = R.drawable.gate_true
         else
-            imageRessource = R.drawable.image_android_development_off
+            imageRessource = R.drawable.gate_false
         when(className.substringBefore("Gate")){
             "And"->{componentView.setImageResource(imageRessource)}
             "Nand"->{componentView.setImageResource(imageRessource)}
@@ -261,7 +262,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
             "Input"->{componentView.setImageResource(imageRessource)}
             else->{}
         }
-
+        componentView.contentDescription = className.substringBefore("Gate")
 
         //determine size
         var heightMod = 0
@@ -372,8 +373,23 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     constraintSet.connect(view.id,ConstraintSet.TOP,layer[viewIndex-1].id,ConstraintSet.BOTTOM)
                     constraintSet.connect(view.id,ConstraintSet.BOTTOM,activity.LevelLayout.id,ConstraintSet.BOTTOM)
                 }
+                //Add and constraint gate text
+                constraintText(view, activity)
             }
             activity.LevelLayout.setConstraintSet(constraintSet)
         }
+    }
+
+    //Adds and constraints text
+    private fun constraintText(view: View, activity: Activity){
+        val textView = TextView(context)
+        textView.id = view.id * (-1)
+        textView.text = view.contentDescription
+        activity.LevelLayout.addView(textView)
+
+        constraintSet.connect(textView.id, ConstraintSet.TOP, view.id, ConstraintSet.TOP)
+        constraintSet.connect(textView.id, ConstraintSet.LEFT, view.id, ConstraintSet.LEFT)
+        constraintSet.connect(textView.id, ConstraintSet.RIGHT, view.id, ConstraintSet.RIGHT)
+        constraintSet.connect(textView.id, ConstraintSet.BOTTOM, view.id, ConstraintSet.BOTTOM)
     }
 }

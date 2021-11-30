@@ -22,11 +22,9 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
     //View holder class with attributes and init function
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var itemImage: ImageView
         var itemTitle: TextView
 
         init{
-            itemImage = itemView.findViewById(R.id.levelx_imageView)
             itemTitle = itemView.findViewById(R.id.levelx_name)
 
             //On click listener
@@ -51,7 +49,6 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: LevelAdapter.ViewHolder, position: Int) {
 
         holder.itemTitle.text = levelNames[position]
-        holder.itemImage.setImageResource(image)
     }
 
     override fun getItemCount(): Int {

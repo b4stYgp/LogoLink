@@ -16,6 +16,7 @@
             android:exported="true" />
         <activity
             android:name=".LevelsActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".SettingsActivity"
@@ -24,6 +25,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
