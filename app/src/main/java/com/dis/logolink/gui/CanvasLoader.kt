@@ -12,11 +12,11 @@ class CanvasLoader(screenWidth: Int, screenHeight: Int) {
     var paint: Paint? = null
     var positions = mutableListOf<Float>()
 
-    fun <T>calculateLinePositions(elementList: MutableMap<T, T>, activity: Activity): Bitmap{
+    fun <T>calculateLinePositions(elementList: MutableList<Pair<T, T>>, activity: Activity): Bitmap{
         for(element in elementList){
-            setStartPosition(activity.findViewById(element.key as Int))
+            setStartPosition(activity.findViewById(element.second as Int))
             //EndX EndY
-            setEndPostition(activity.findViewById(element.value as Int))
+            setEndPostition(activity.findViewById(element.first as Int))
         }
         paint = Paint().apply {
             color = Color.BLACK
@@ -27,26 +27,28 @@ class CanvasLoader(screenWidth: Int, screenHeight: Int) {
         return bitmap
     }
 
-
+    //Start position from LEFT TO RIGHT
     fun setStartPosition(element: View){
         //Position on Screen
         var pos = element.getLocationOnScreen()
 
         //StartX
-        positions.add(pos.x.toFloat()) //former Right
+        positions.add(pos.x.toFloat() + element.width.toFloat()/2)
         //StartY
         positions.add(pos.y.toFloat())
     }
 
+    //End position from LEFT TO RIGHT
     fun setEndPostition(element: View) {
         //Position on Screen
         var pos = element.getLocationOnScreen()
         //End X
-        positions.add(pos.x.toFloat()) //former Left
+        positions.add(pos.x.toFloat() - element.width.toFloat()/4)
         //End Y
         positions.add(pos.y.toFloat())
     }
 
+    //X, Y position of view
     fun View.getLocationOnScreen():Point
     {
         val location = IntArray(2)

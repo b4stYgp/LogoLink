@@ -24,7 +24,6 @@ import com.dis.logolink.editor.models.Layer
 import com.dis.logolink.editor.models.Level
 import com.dis.logolink.gui.CanvasLoader
 import kotlinx.android.synthetic.main.activity_level.*
-import kotlinx.android.synthetic.main.activity_level.view.*
 
 class ViewLoader(val activity: Activity,val context: Context) {
     lateinit var level: Level
@@ -36,8 +35,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
     var guidelineList = mutableListOf<Guideline>()
     val constraintSet = ConstraintSet()
     //Dictionary for drawing positions
-    val inputDictionary = mutableMapOf<Int, MutableList<Component>>()
-    val inputViewDictionary = mutableMapOf<Int, Int>()
+    val gateInputs = mutableMapOf<Int, MutableList<Component>>()
+    val gateInputConnections = mutableListOf<Pair<Int, Int>>()
 
     fun mapLevelToView(){
         generateIdListsFromLevel()
@@ -59,7 +58,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
         var key: Int
         var value: Int? = null
         var layerIndex: Int?= null
-        inputDictionary.forEach()
+        var listIndex = 0
+        gateInputs.forEach()
         {
             key = it.key
             //For each input list entry...
@@ -73,6 +73,19 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 }
                 //Logic gate
                 else{
+                    //Search for gate layer and set value to gate id
+                    level.layerList.forEach() {
+                        layerIndex = level.layerList.indexOf(it)
+                        it.componentList.forEach() {
+                            if (it == componentTemp) {
+                                value =
+                                    layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
+                                        it
+                                    )].id
+                            }
+                        }
+                    }
+
                     //Corresponding layer found? If so, then and set value to gate id
                     if(layerIndex != null){
                         level.layerList[layerIndex!!].componentList.forEach(){
@@ -81,24 +94,11 @@ class ViewLoader(val activity: Activity,val context: Context) {
                             }
                         }
                     }
-                    //Search for gate layer and set value to gate id
-                    else {
-                        level.layerList.forEach() {
-                            layerIndex = level.layerList.indexOf(it)
-                            it.componentList.forEach() {
-                                if (it == componentTemp) {
-                                    value =
-                                        layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
-                                            it
-                                        )].id
-                                }
-                            }
-                        }
-                    }
                 }
                 //Add to dictionary if found
                 if(value != null){
-                    inputViewDictionary.put(key, value!!)
+                    gateInputConnections.add(listIndex, Pair(key, value!!))
+                    listIndex++
                 }
                 //Reset value
                 value = null
@@ -112,7 +112,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
     fun drawLines() {
         val canvasLoader = CanvasLoader(getScreenWidth(), getScreenHeight())
         //EXCEPTION
-        val bitmap = canvasLoader.calculateLinePositions(inputViewDictionary, activity)
+        val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
         val background = ImageView(context)
         background.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         val params = background.layoutParams
@@ -160,7 +160,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 compViewList.add(createComponentView(it, componentIndex))
 
                 //Fill dictionary for mapping
-                inputDictionary.put(componentIndex, it.inputList)
+                gateInputs.put(componentIndex, it.inputList)
             }
             layerViewList.add(compViewList)
         }
