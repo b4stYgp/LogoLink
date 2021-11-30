@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.dis.logolink.level.Level1Activity
+import com.dis.logolink.gui.LevelActivity
+//import com.dis.logolink.level.Level1Activity
+import kotlinx.android.synthetic.main.levels_item.view.*
 
 class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
@@ -17,6 +18,7 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
     private var levelNames = arrayOf("Level 1", "Level 2", "Level 3", "Level 4"
         , "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10")
     private var image = R.drawable.levels_chip
+
 
     //View holder class with attributes and init function
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -29,9 +31,13 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
             //On click listener
             itemView.setOnClickListener{
-                Toast.makeText(itemView.context, "Clicked", Toast.LENGTH_LONG).show()
+                Toast.makeText(it.context, it.levelx_name.text, Toast.LENGTH_LONG).show()
                 //Test activity 1
-                it.context.startActivity(Intent(itemView.context, Level1Activity::class.java))
+                when(it.levelx_name.text) {
+                    "Level 1" -> {}
+                    "Level 2" -> {it.context.startActivity(Intent(it.context, LevelActivity::class.java).putExtra("levelname",it.levelx_name.text))}
+                }
+
             }
         }
     }
@@ -43,6 +49,7 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
     //Set holder attributes
     override fun onBindViewHolder(holder: LevelAdapter.ViewHolder, position: Int) {
+
         holder.itemTitle.text = levelNames[position]
         holder.itemImage.setImageResource(image)
     }
@@ -50,4 +57,5 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
         return levelNames.size
     }
+
 }
