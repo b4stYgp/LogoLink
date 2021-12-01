@@ -201,9 +201,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     it.forEach(){
                         val imageIndex = layerViewList[layerIndex].indexOf(it)
                         if(level.layerList[layerIndex].componentList[imageIndex].setResult())
-                            it.setImageResource(R.drawable.image_android_development_on)
+                            it.setImageResource(R.drawable.gate_true)
                         else
-                            it.setImageResource(R.drawable.image_android_development_off)
+                            it.setImageResource(R.drawable.gate_false)
                     }
                 }
             }
@@ -257,18 +257,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
             imageRessource = R.drawable.gate_true
         else
             imageRessource = R.drawable.gate_false
-        when(className.substringBefore("Gate")){
-            "And"->{componentView.setImageResource(imageRessource)}
-            "Nand"->{componentView.setImageResource(imageRessource)}
-            "Or" ->{componentView.setImageResource(imageRessource)}
-            "Nor"->{componentView.setImageResource(imageRessource)}
-            "Xor"->{componentView.setImageResource(imageRessource)}
-            "Xnor"->{componentView.setImageResource(imageRessource)}
-            "Not"->{componentView.setImageResource(imageRessource)}
-            "Identity"->{componentView.setImageResource(imageRessource)}
-            "Input"->{componentView.setImageResource(imageRessource)}
-            else->{}
-        }
+        componentView.setImageResource(imageRessource)
         componentView.contentDescription = className.substringBefore("Gate")
 
         //determine size
