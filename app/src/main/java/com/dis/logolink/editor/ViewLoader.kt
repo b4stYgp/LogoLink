@@ -1,12 +1,17 @@
 package com.dis.logolink.editor
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Insets
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.fonts.FontFamily
 import android.os.Build
 import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -18,6 +23,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.marginLeft
 import com.dis.logolink.editor.models.Component
 
 import com.dis.logolink.gui.R
@@ -385,6 +392,14 @@ class ViewLoader(val activity: Activity,val context: Context) {
         val textView = TextView(context)
         textView.id = view.id * (-1)
         textView.text = view.contentDescription
+        textView.gravity = Gravity.CENTER
+        textView.setTextColor(Color.WHITE)
+        textView.typeface = ResourcesCompat.getFont(context, R.font.font_arcadeclassic)
+        val layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+        //Picture offset
+        layoutParams.setMargins(50, 50, 0, 0)
+        textView.layoutParams = layoutParams
+
         activity.LevelLayout.addView(textView)
 
         constraintSet.connect(textView.id, ConstraintSet.TOP, view.id, ConstraintSet.TOP)
