@@ -1,14 +1,11 @@
 package com.dis.logolink.editor
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Insets
-import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.fonts.FontFamily
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -24,7 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginLeft
 import com.dis.logolink.editor.models.Component
 
 import com.dis.logolink.gui.R
@@ -45,6 +41,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Dictionary for drawing positions
     val gateInputs = mutableMapOf<Int, MutableList<Component>>()
     val gateInputConnections = mutableListOf<Pair<Int, Int>>()
+
+    val guideLineTEST = mutableListOf<Pair< Int, Pair<Int, Int>>>()
 
     fun mapLevelToView(){
         generateIdListsFromLevel()
@@ -67,6 +65,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
         var value: Int? = null
         var layerIndex: Int?= null
         var listIndex = 0
+        //TODO: TEST VAR
+        var gIndex = 0
+
         gateInputs.forEach()
         {
             key = it.key
@@ -84,7 +85,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     //Search for gate layer and set value to gate id
                     level.layerList.forEach() {
                         layerIndex = level.layerList.indexOf(it)
-                        it.componentList.forEach() {
+                       it.componentList.forEach() {
                             if (it == componentTemp) {
                                 value =
                                     layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
@@ -105,6 +106,18 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 //Add to dictionary if found
                 if(value != null){
                     gateInputConnections.add(listIndex, Pair(key, value!!))
+
+                    //TODO: Test guidelines right of val
+                    var guidelineID = getLayerGuideline(key!!)
+                    guideLineTEST.add(
+                        gIndex,
+                        Pair(
+                            guidelineID,
+                            Pair(value!!, key)
+                        )
+                    )
+                    gIndex++
+
                     listIndex++
                 }
                 //Reset value
@@ -115,10 +128,27 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
     }
 
+    //Get the corresponding layer guideline
+    //Returns: Guideline id
+    fun getLayerGuideline(componentLeftOfGuidelineID: Int): Int{
+        var guidelineLayerIndex = 0
+        var layerCount = 0
+        layerViewList.forEach() {
+            it.forEach(){
+                if(it.id == componentLeftOfGuidelineID){
+                    guidelineLayerIndex = layerCount
+                }
+            }
+            layerCount++
+        }
+        return guidelineList[guidelineLayerIndex].id
+    }
+
     //Draws each line from gate to gate
     fun drawLines() {
-        val canvasLoader = CanvasLoader(getScreenWidth(), getScreenHeight())
-        val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
+        val canvasLoader = CanvasLoader(context.resources.displayMetrics.widthPixels, context.resources.displayMetrics.heightPixels)
+        //val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
+        val bitmap = canvasLoader.calculateLinePositionsTEST(guideLineTEST, activity)
         val background = ImageView(context)
         background.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         val params = background.layoutParams
