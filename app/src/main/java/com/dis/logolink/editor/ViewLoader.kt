@@ -41,7 +41,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Dictionary for drawing positions
     val gateInputs = mutableMapOf<Int, MutableList<Component>>()
     val gateInputConnections = mutableListOf<Pair<Int, Int>>()
-
+    //TODO: gateInputConnections = guideLineTEST IF EVERYTHING WORKS PROPERLY
     val guideLineTEST = mutableListOf<Pair< Int, Pair<Int, Int>>>()
 
     fun mapLevelToView(){
@@ -65,7 +65,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
         var value: Int? = null
         var layerIndex: Int?= null
         var listIndex = 0
-        //TODO: TEST VAR
+        //For guidelines
         var gIndex = 0
 
         gateInputs.forEach()
@@ -107,7 +107,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 if(value != null){
                     gateInputConnections.add(listIndex, Pair(key, value!!))
 
-                    //TODO: Test guidelines right of val
+                    //TODO: verify
                     var guidelineID = getLayerGuideline(key!!)
                     guideLineTEST.add(
                         gIndex,
@@ -147,8 +147,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Draws each line from gate to gate
     fun drawLines() {
         val canvasLoader = CanvasLoader(context.resources.displayMetrics.widthPixels, context.resources.displayMetrics.heightPixels)
-        //val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
-        val bitmap = canvasLoader.calculateLinePositionsTEST(guideLineTEST, activity)
+        val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
+        //val bitmap = canvasLoader.calculateLinePositionsTEST(guideLineTEST, activity)
         val background = ImageView(context)
         background.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         val params = background.layoutParams
