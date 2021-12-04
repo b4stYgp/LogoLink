@@ -224,8 +224,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     input.setImageResource(R.drawable.lamp_on)
                     !level.defaultInputList[level.defaultInputList.indexOf(component)]
                 }
-                //TODO besser nen ChangeListener für die ImageViews als en onClick Event bei den Buttons
-                    //Change ImageView Ressource
+                //Change ImageView Ressource by setResult
                 layerViewList.forEachIndexed{layerIndex, layer ->
                     layer.forEachIndexed(){imageViewIndex, imageView ->
                         if(level.layerList[layerIndex].componentList[imageViewIndex].setResult())
