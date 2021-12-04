@@ -20,12 +20,16 @@ import android.view.WindowMetrics
 import android.os.Build
 
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.graphics.Insets
+import android.graphics.drawable.GradientDrawable
+import android.media.Image
+import android.view.ViewGroup
+import android.widget.LinearLayout
 
 import androidx.annotation.NonNull
-
-
-
+import androidx.appcompat.widget.LinearLayoutCompat
+import kotlinx.android.synthetic.main.popup_layout_levelcomplete.*
 
 
 class LevelActivity() : AppCompatActivity() {
@@ -52,7 +56,6 @@ lateinit var viewLoader: ViewLoader
         super.onWindowFocusChanged(hasFocus)
         viewLoader.drawLines()
     }
-
 }
 
 

@@ -2,10 +2,12 @@ package com.dis.logolink.editor
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -43,6 +45,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
     val gateInputConnections = mutableListOf<Pair<Int, Int>>()
     //TODO: gateInputConnections = guideLineTEST IF EVERYTHING WORKS PROPERLY
     val guideLineTEST = mutableListOf<Pair< Int, Pair<Int, Int>>>()
+
+    val popupDialog: Dialog = Dialog(context)
 
     fun mapLevelToView(){
         generateIdListsFromLevel()
@@ -230,6 +234,15 @@ class ViewLoader(val activity: Activity,val context: Context) {
                             imageView.setImageResource(R.drawable.gate_false)
                     }
                 }
+                if(level.getLastResult()){
+                    popupDialog.setContentView(R.layout.popup_layout_levelcomplete)
+                    val btn_exit = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_exit_btn)
+                    btn_exit.setOnClickListener {
+                        activity.finish()
+                    }
+                    //popupDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    popupDialog.show()
+                }
             }
             //get corresponding id
             input.id = btnViewIds[level.defaultInputList.indexOf(component)]
@@ -331,7 +344,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
     //Get screen width
     @SuppressLint("ObsoleteSdkInt")
-    private fun getScreenWidth(): Int {
+    fun getScreenWidth(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val windowMetrics = activity.windowManager.currentWindowMetrics
             val insets: Insets = windowMetrics.windowInsets
@@ -346,7 +359,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
     //Get screen height
     @SuppressLint("ObsoleteSdkInt")
-    private fun getScreenHeight(): Int {
+    fun getScreenHeight(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val windowMetrics = activity.windowManager.currentWindowMetrics
             val insets: Insets = windowMetrics.windowInsets

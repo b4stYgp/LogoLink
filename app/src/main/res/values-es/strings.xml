@@ -12,6 +12,15 @@
     <string name="levels_title">¡Elige un nivel!</string>
     <string name="level_name">Nivel %$i</string>
 
+    <!-- Individual Level Activity -->
+    <string name="level_complete">Level complete!</string>
+    <string name="level_infoBox_AND">AND TODO</string>
+    <string name="level_infoBox_OR">OR TODO</string>
+    <string name="level_infoBox_NAND">NAND TODO</string>
+    <string name="level_infoBox_NOT">NOT TODO</string>
+    <string name="level_infoBox_NOR">NOR TODO</string>
+    <string name="btn_exit">Exit</string>
+
     <!-- SettingsActivity -->
     <string name="settings_header">Configuración</string>
 
