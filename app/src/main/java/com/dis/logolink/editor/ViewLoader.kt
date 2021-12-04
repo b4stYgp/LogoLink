@@ -41,6 +41,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Dictionary for drawing positions
     val gateInputs = mutableMapOf<Int, MutableList<Component>>()
     val gateInputConnections = mutableListOf<Pair<Int, Int>>()
+    //TODO: gateInputConnections = guideLineTEST IF EVERYTHING WORKS PROPERLY
+    val guideLineTEST = mutableListOf<Pair< Int, Pair<Int, Int>>>()
 
     fun mapLevelToView(){
         generateIdListsFromLevel()
@@ -63,6 +65,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
         var value: Int? = null
         var layerIndex: Int?= null
         var listIndex = 0
+        //For guidelines
+        var gIndex = 0
+
         gateInputs.forEach()
         {
             key = it.key
@@ -80,7 +85,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     //Search for gate layer and set value to gate id
                     level.layerList.forEach() {
                         layerIndex = level.layerList.indexOf(it)
-                        it.componentList.forEach() {
+                       it.componentList.forEach() {
                             if (it == componentTemp) {
                                 value =
                                     layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
@@ -101,6 +106,18 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 //Add to dictionary if found
                 if(value != null){
                     gateInputConnections.add(listIndex, Pair(key, value!!))
+
+                    //TODO: verify
+                    var guidelineID = getLayerGuideline(key!!)
+                    guideLineTEST.add(
+                        gIndex,
+                        Pair(
+                            guidelineID,
+                            Pair(value!!, key)
+                        )
+                    )
+                    gIndex++
+
                     listIndex++
                 }
                 //Reset value
@@ -111,10 +128,27 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
     }
 
+    //Get the corresponding layer guideline
+    //Returns: Guideline id
+    fun getLayerGuideline(componentLeftOfGuidelineID: Int): Int{
+        var guidelineLayerIndex = 0
+        var layerCount = 0
+        layerViewList.forEach() {
+            it.forEach(){
+                if(it.id == componentLeftOfGuidelineID){
+                    guidelineLayerIndex = layerCount
+                }
+            }
+            layerCount++
+        }
+        return guidelineList[guidelineLayerIndex].id
+    }
+
     //Draws each line from gate to gate
     fun drawLines() {
-        val canvasLoader = CanvasLoader(getScreenWidth(), getScreenHeight())
+        val canvasLoader = CanvasLoader(context.resources.displayMetrics.widthPixels, context.resources.displayMetrics.heightPixels)
         val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
+        //val bitmap = canvasLoader.calculateLinePositionsTEST(guideLineTEST, activity)
         val background = ImageView(context)
         background.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         val params = background.layoutParams
