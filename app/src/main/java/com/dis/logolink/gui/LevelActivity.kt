@@ -38,10 +38,15 @@ lateinit var viewLoader: ViewLoader
         viewLoader = ViewLoader(this,this)
         //load Level with Mapper and Parser
         val regex = """level(\d{1}|\d{2}).yml""".toRegex()
-        field!!.forEach {
+        field!!.forEach ca@{
             if(it.matches(regex)) {
-                if (it.contains(intent.extras?.get("levelname").toString().filter { it.isDigit() })){
+                if (it.equals(intent.extras?.get("levelname").toString()
+                        .lowercase()
+                        .replace(" ","")
+                        .plus(".yml")
+                        )){
                     viewLoader.level = LevelMapper().levelMapping(Parser().parse(assets.open(it))!!)
+                    return@ca
                 }
             }
         }

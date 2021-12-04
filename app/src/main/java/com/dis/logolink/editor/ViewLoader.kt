@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.res.ResourcesCompat
 import com.dis.logolink.editor.models.Component
+import com.dis.logolink.editor.models.IdentityGate
 
 import com.dis.logolink.gui.R
 import com.dis.logolink.editor.models.Layer
@@ -280,8 +281,12 @@ class ViewLoader(val activity: Activity,val context: Context) {
             imageRessource = R.drawable.gate_true
         else
             imageRessource = R.drawable.gate_false
-        componentView.setImageResource(imageRessource)
+
         componentView.contentDescription = className.substringBefore("Gate")
+
+        if(!componentView.contentDescription.contains("Identity"))
+            componentView.setImageResource(imageRessource)
+
 
         //determine size
         var heightMod = 0

@@ -16,7 +16,7 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
     //Filler levelNames
     private var levelNames = arrayOf("Level 1", "Level 2", "Level 3", "Level 4"
-        , "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10")
+        , "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10", "Level 11", "Level 12")
     private var image = R.drawable.levels_chip
 
 
