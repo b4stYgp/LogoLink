@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.drawable.BitmapDrawable
@@ -19,6 +22,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
@@ -30,6 +34,7 @@ import com.dis.logolink.gui.R
 import com.dis.logolink.editor.models.Layer
 import com.dis.logolink.editor.models.Level
 import com.dis.logolink.gui.CanvasLoader
+import com.dis.logolink.gui.LevelActivity
 import kotlinx.android.synthetic.main.activity_level.*
 
 class ViewLoader(val activity: Activity,val context: Context) {
@@ -37,6 +42,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
     lateinit private var btnViewIds : List<Int>
     lateinit private var cmpViewIdsList : List<List<Int>>
     lateinit private var glViewIds : List<Int>
+    val sp = context.getSharedPreferences("global", MODE_PRIVATE)
     var inputBtnViewList =  mutableListOf<ImageButton>()
     var layerViewList= mutableListOf<MutableList<ImageView>>()
     var guidelineList = mutableListOf<Guideline>()
@@ -237,7 +243,25 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 if(level.getLastResult()){
                     popupDialog.setContentView(R.layout.popup_layout_levelcomplete)
                     val btn_exit = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_exit_btn)
+                    val btn_continue = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_continue_btn)
                     btn_exit.setOnClickListener {
+                        activity.finish()
+                    }
+
+                    btn_continue.setOnClickListener {
+
+                        var levelNumber = activity.intent.extras!!.get("levelname").toString().filter {
+                            it.isDigit()
+                        }.toInt()
+
+//                        val spe = sp.edit()
+//                        spe.putString("highestLevelCompleted", levelNumber.toString())
+//                        spe.apply()
+
+                        levelNumber += 1
+                        val nextLevelName = "Level " + levelNumber
+                        context.startActivity(Intent(it.context, LevelActivity::class.java)
+                            .putExtra("levelname",nextLevelName))
                         activity.finish()
                     }
                     //popupDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
