@@ -30,12 +30,8 @@ class LevelAdapter: RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
             //On click listener
             itemView.setOnClickListener{
                 Toast.makeText(it.context, it.levelx_name.text, Toast.LENGTH_LONG).show()
-                //Test activity 1
-                when(it.levelx_name.text) {
-                    "Level 1" -> {}
-                    "Level 2" -> {it.context.startActivity(Intent(it.context, LevelActivity::class.java).putExtra("levelname",it.levelx_name.text))}
-                }
-
+                //open LevelActivtiy
+                it.context.startActivity(Intent(it.context, LevelActivity::class.java).putExtra("levelname",it.levelx_name.text))
             }
         }
     }
