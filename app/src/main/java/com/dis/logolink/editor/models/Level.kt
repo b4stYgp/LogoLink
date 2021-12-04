@@ -29,4 +29,8 @@ class Level(val defaultInputList: MutableList<Component>, val  layerList :Mutabl
         str += "\nresult: ${result}\n"
         return str
     }
+
+    fun getLastResult(): Boolean{
+        return layerList.last().componentList.last().setResult()
+    }
 }
