@@ -1,14 +1,11 @@
 package com.dis.logolink.editor
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Insets
-import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.fonts.FontFamily
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -24,7 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginLeft
 import com.dis.logolink.editor.models.Component
 
 import com.dis.logolink.gui.R
@@ -156,17 +152,13 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
     //Creates gate element
     private fun createLayerViewList() {
-        for (layer in level.layerList) {
+        level.layerList.forEachIndexed { layerIndex, layer ->
             val compViewList = mutableListOf<ImageView>()
-            val indexLayer = level.layerList.indexOf(layer)
-            layer.componentList.forEach() {
-                val indexComponent = layer.componentList.indexOf(it)
-                val componentIndex = cmpViewIdsList[indexLayer][indexComponent]
-
-                compViewList.add(createComponentView(it, componentIndex))
-
+            layer.componentList.forEachIndexed() { componentIndex, component ->
+                val componentViewIndex = cmpViewIdsList[layerIndex][componentIndex]
+                compViewList.add(createComponentView(component, componentViewIndex))
                 //Fill dictionary for mapping
-                gateInputs.put(componentIndex, it.inputList)
+                gateInputs.put(componentViewIndex, component.inputList)
             }
             layerViewList.add(compViewList)
         }
@@ -185,8 +177,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 input.setImageResource(R.drawable.lamp_on)
             else
                 input.setImageResource(R.drawable.lamp_off)
-            input.setOnClickListener {
-                val btn = it
+            input.setOnClickListener { imageView ->
+                val btn = imageView
                 if (component.setResult()) {
                     input.setImageResource(R.drawable.lamp_off)
                     !level.defaultInputList[level.defaultInputList.indexOf(component)]
@@ -196,14 +188,12 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 }
                 //TODO besser nen ChangeListener für die ImageViews als en onClick Event bei den Buttons
                     //Change ImageView Ressource
-                layerViewList.forEach(){
-                    val layerIndex = layerViewList.indexOf(it)
-                    it.forEach(){
-                        val imageIndex = layerViewList[layerIndex].indexOf(it)
-                        if(level.layerList[layerIndex].componentList[imageIndex].setResult())
-                            it.setImageResource(R.drawable.gate_true)
+                layerViewList.forEachIndexed{layerIndex, layer ->
+                    layer.forEachIndexed(){imageViewIndex, imageView ->
+                        if(level.layerList[layerIndex].componentList[imageViewIndex].setResult())
+                            imageView.setImageResource(R.drawable.gate_true)
                         else
-                            it.setImageResource(R.drawable.gate_false)
+                            imageView.setImageResource(R.drawable.gate_false)
                     }
                 }
             }
