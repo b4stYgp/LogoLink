@@ -344,8 +344,53 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
         componentView.layoutParams = LinearLayout.LayoutParams(250,175)
         componentView.id = id
+
+        //Add infobox popup
+        componentView.setOnClickListener {
+            popupDialog.setContentView(R.layout.popup_layout_info)
+            infoBoxSetUp(componentView)
+            popupDialog.show()
+        }
+
         activity.LevelLayout.addView(componentView)
         return componentView
+    }
+
+    //Sets up info box
+    private fun infoBoxSetUp(componentView: View){
+        val gateText = popupDialog.findViewById<TextView>(R.id.popupoverbox_boxTitle)
+        val currentGate = activity.findViewById<TextView>(componentView.id * -1)
+        val gateInfo = popupDialog.findViewById<TextView>(R.id.popupoverbox_boxInfo)
+        val truthTable = popupDialog.findViewById<ImageView>(R.id.truth_table)
+
+        gateText.text = currentGate.text
+
+        when(currentGate.text){
+            "And" ->{
+                gateInfo.text = context.resources.getString(R.string.And_info)
+                truthTable.background = context.resources.getDrawable(R.drawable.and_truthtable)
+            }
+            "Or" ->{
+                gateInfo.text = context.resources.getString(R.string.Or_info)
+                truthTable.background = context.resources.getDrawable(R.drawable.or_truthtable)
+            }
+            "Not" ->{
+                gateInfo.text = context.resources.getString(R.string.Not_info)
+                truthTable.background = context.resources.getDrawable(R.drawable.not_turthtable)
+            }
+            "Nand" ->{
+                gateInfo.text = context.resources.getString(R.string.Nand_info)
+                truthTable.background = context.resources.getDrawable(R.drawable.nand_truthtable)
+            }
+            "Nor" ->{
+                gateInfo.text = context.resources.getString(R.string.Nor_info)
+                truthTable.background = context.resources.getDrawable(R.drawable.nor_truthtable)
+            }
+            "Xnor" ->{
+                gateInfo.text = context.resources.getString(R.string.Xnor_info)
+                truthTable.background = context.resources.getDrawable(R.drawable.xnor_truthtable)
+            }
+        }
     }
 
     //Set constraint for input lamps

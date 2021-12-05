@@ -14,12 +14,14 @@
 
     <!-- Individual Level Activity -->
     <string name="level_complete">Level complete!</string>
-    <string name="level_infoBox_AND">AND TODO</string>
-    <string name="level_infoBox_OR">OR TODO</string>
-    <string name="level_infoBox_NAND">NAND TODO</string>
-    <string name="level_infoBox_NOT">NOT TODO</string>
-    <string name="level_infoBox_NOR">NOR TODO</string>
     <string name="btn_exit">Exit</string>
+        <!-- Gate information -->
+        <string name="And_info">and info todo</string>
+        <string name="Or_info">or info todo</string>
+        <string name="Not_info">not info todo</string>
+        <string name="Nor_info">nor info todo</string>
+        <string name="Xnor_info">xnor info todo</string>
+        <string name="Nand_info">nand info todo</string>
 
     <!-- SettingsActivity -->
     <string name="settings_header">Configuración</string>

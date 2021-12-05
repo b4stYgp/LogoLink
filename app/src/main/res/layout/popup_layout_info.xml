@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/font_arcadeclassic"
         android:textSize="42dp"
+        android:textColor="@color/white"
         android:gravity="center"
         android:text="Gate name"
 
@@ -37,10 +38,10 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/font_arcadeclassic"
-        android:textSize="24dp"
-        android:text="Dynamically added gate info text"
+        android:textSize="18dp"
+        android:textColor="@color/white"
 
-        app:layout_constraintTop_toTopOf="@+id/popupoverbox_boxTitle"
+        app:layout_constraintTop_toBottomOf="@+id/popupoverbox_boxTitle"
         app:layout_constraintLeft_toLeftOf="@+id/popupoverbox_box"
         app:layout_constraintRight_toRightOf="@+id/popupoverbox_box"
         app:layout_constraintBottom_toTopOf="@id/truth_table"
