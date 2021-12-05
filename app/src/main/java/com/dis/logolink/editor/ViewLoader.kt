@@ -42,7 +42,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
     lateinit private var btnViewIds : List<Int>
     lateinit private var cmpViewIdsList : List<List<Int>>
     lateinit private var glViewIds : List<Int>
-    val sp = context.getSharedPreferences("global", MODE_PRIVATE)
+    val sp = context.getSharedPreferences("levelPref", MODE_PRIVATE)
     var inputBtnViewList =  mutableListOf<ImageButton>()
     var layerViewList= mutableListOf<MutableList<ImageView>>()
     var guidelineList = mutableListOf<Guideline>()
@@ -244,20 +244,26 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     popupDialog.setContentView(R.layout.popup_layout_levelcomplete)
                     val btn_exit = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_exit_btn)
                     val btn_continue = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_continue_btn)
+
+                    //Update shared pref
+                    var levelNumber = activity.intent.extras!!.get("levelname").toString().filter {
+                        it.isDigit()
+                    }.toInt()
+                    //Prevent from accessing non-existing levels
+                    if(sp.getInt("highestLevelReached", 0) < levelNumber
+                        && sp.getInt("maxLevel", 0) > levelNumber) {
+                        val spe = sp.edit()
+                        spe.apply {
+                            putInt("highestLevelReached", levelNumber)
+                            apply()
+                        }
+                    }
+
+                    //Infobox listeners
                     btn_exit.setOnClickListener {
                         activity.finish()
                     }
-
                     btn_continue.setOnClickListener {
-
-                        var levelNumber = activity.intent.extras!!.get("levelname").toString().filter {
-                            it.isDigit()
-                        }.toInt()
-
-//                        val spe = sp.edit()
-//                        spe.putString("highestLevelCompleted", levelNumber.toString())
-//                        spe.apply()
-
                         levelNumber += 1
                         val nextLevelName = "Level " + levelNumber
                         context.startActivity(Intent(it.context, LevelActivity::class.java)

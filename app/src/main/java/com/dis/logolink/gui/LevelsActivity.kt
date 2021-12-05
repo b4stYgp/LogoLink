@@ -20,8 +20,20 @@ class LevelsActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = layoutManager
 
+        //Set all available levels which are to be displayed in the level selection
+        val sp = getSharedPreferences("levelPref", MODE_PRIVATE)
+        val maxLevel = sp.getInt("highestLevelReached", 0)
+        var possibleLevels = arrayOfNulls<String>(maxLevel + 1)
+        if(maxLevel != 0){
+            for (i in 0..maxLevel){
+                possibleLevels[i] = "Level " + (i + 1).toString()
+            }
+        }else{
+            possibleLevels.set(0, "Level 1")
+        }
+
         //set adapter
-        adapter = LevelAdapter()
+        adapter = LevelAdapter(possibleLevels)
         recyclerView.adapter = adapter
     }
 }

@@ -24,6 +24,7 @@
         android:fontFamily="@font/font_arcadeclassic"
         android:textSize="42dp"
         android:text="@string/level_complete"
+        android:textColor="@color/white"
 
         app:layout_constraintTop_toTopOf="@+id/popupoverbox_box_levelComplete"
         app:layout_constraintLeft_toLeftOf="@+id/popupoverbox_box_levelComplete"
