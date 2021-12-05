@@ -25,6 +25,7 @@ import android.graphics.Insets
 import android.graphics.drawable.GradientDrawable
 import android.media.Image
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.LinearLayout
 
 import androidx.annotation.NonNull
@@ -38,6 +39,8 @@ lateinit var viewLoader: ViewLoader
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_level)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         val field = assets.list("")
         viewLoader = ViewLoader(this,this)
         //load Level with Mapper and Parser

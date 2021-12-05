@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.Guideline
 import kotlinx.android.synthetic.main.activity_level.*
 
 class CanvasLoader(screenWidth: Int, screenHeight: Int) {
-    val bitmap: Bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888)
+    val bitmap: Bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.RGBA_F16)
     val canvas: Canvas = Canvas(bitmap)
     var paint: Paint? = null
     var positions = mutableListOf<Float>()

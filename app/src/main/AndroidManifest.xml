@@ -12,7 +12,7 @@
         <activity
             android:name=".LevelActivity"
             android:screenOrientation="landscape"
-            android:parentActivityName=".LevelsActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".LevelsActivity"
