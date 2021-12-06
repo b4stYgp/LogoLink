@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.*
 import android.view.View
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.constraintlayout.widget.Guideline
 import kotlinx.android.synthetic.main.activity_level.*
 
@@ -14,10 +16,29 @@ class CanvasLoader(screenWidth: Int, screenHeight: Int) {
     var positions = mutableListOf<Float>()
 
     fun <T>calculateLinePositions(elementList: MutableList<Pair<T, T>>, activity: Activity): Bitmap{
-        for(element in elementList){
+        for(element in elementList) {
             //Gate position START
-            setStartPosition(activity.findViewById(element.second as Int))
-            setEndPostition(activity.findViewById(element.first as Int))
+            if(!(activity.LevelLayout.findViewById<View>(element.second as Int) is ImageButton))
+            {
+              if(activity.LevelLayout.findViewById<TextView>(element.second as Int *-1).contentDescription!!.equals("Identity"))
+                  elementList.forEach{
+                      if(it.first == element.second as Int)
+                          setStartPosition(activity.findViewById(it.second as Int))
+                  }
+                else
+                  setStartPosition(activity.findViewById(element.second as Int))
+            }
+            else
+                setStartPosition(activity.findViewById(element.second as Int))
+            if (activity.findViewById<TextView>(element.first as Int * -1).contentDescription.equals("Identity")) {
+                elementList.forEach {
+                    if (it.second == element.first as Int)
+                        setEndPostition(activity.findViewById(it.first as Int))
+                    }
+                }
+            else
+                setEndPostition(activity.findViewById(element.first as Int))
+
         }
         paint = Paint().apply {
             color = Color.BLACK

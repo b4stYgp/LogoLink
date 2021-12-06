@@ -272,6 +272,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     }
                     //popupDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                     popupDialog.show()
+
                 }
             }
             //get corresponding id
@@ -496,7 +497,13 @@ class ViewLoader(val activity: Activity,val context: Context) {
     private fun constraintText(view: View, activity: Activity){
         val textView = TextView(context)
         textView.id = view.id * (-1)
-        textView.text = view.contentDescription
+        if(view.contentDescription.equals("Identity"))
+            textView.contentDescription = view.contentDescription
+        else {
+            textView.contentDescription = ""
+            textView.text = view.contentDescription
+        }
+        textView.gravity = Gravity.CENTER
         textView.gravity = Gravity.CENTER
         textView.setTextColor(Color.WHITE)
         textView.typeface = ResourcesCompat.getFont(context, R.font.font_arcadeclassic)
