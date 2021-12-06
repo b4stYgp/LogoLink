@@ -234,9 +234,10 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 //Change ImageView Ressource by setResult
                 layerViewList.forEachIndexed{layerIndex, layer ->
                     layer.forEachIndexed(){imageViewIndex, imageView ->
-                        if(level.layerList[layerIndex].componentList[imageViewIndex].setResult())
-                            imageView.setImageResource(R.drawable.gate_true)
-                        else
+                        if(level.layerList[layerIndex].componentList[imageViewIndex].setResult() &&
+                            !(level.layerList[layerIndex].componentList[imageViewIndex].toString().contains("Identity")))
+                                imageView.setImageResource(R.drawable.gate_true)
+                        else if(!(level.layerList[layerIndex].componentList[imageViewIndex].toString().contains("Identity")))
                             imageView.setImageResource(R.drawable.gate_false)
                     }
                 }
