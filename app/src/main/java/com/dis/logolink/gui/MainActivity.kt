@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.content.Intent
 import androidx.core.view.ViewCompat
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.ktx.auth
+import android.view.animation.AnimationUtils
+import com.google.firebase.auth.FirebaseAuth
 import androidx.core.view.WindowInsetsCompat
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_main.*
-import android.view.animation.AnimationUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -34,17 +34,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btn_google.setOnClickListener(this)
         btn_sound.setOnClickListener(this)
 
-        //Start Services
-        val settingsPreferences = getSharedPreferences("settingsPref", MODE_PRIVATE)
-        if (settingsPreferences.getBoolean("sound", true)) {
-            val intent = Intent(this, SoundService::class.java)
-            startService(intent)
-        }
-
-        //Check Cloud
+        //Check Cloud & lateint
         auth = Firebase.auth
         database = FirebaseDatabase.getInstance().reference
-        getProgress()
+
+        //Check Sound
+        checkSound(buttonClick = false)
+
+        //Check Google
+        checkGoogle(buttonClick = false)
+
+
+
     }
 
     private fun getProgress() {
@@ -52,38 +53,87 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             val levelPreference = getSharedPreferences("levelPref", MODE_PRIVATE)
             val highestLevelReachedSharedPref = levelPreference.getInt("highestLevelReached", 1)
-            var highestLevelReachedCloud = 0
 
             database.child("users").child(auth.uid!!)
                 .child("highestLevelReached").get()
                 .addOnCompleteListener{ task ->
-                    highestLevelReachedCloud = task.result.value?.toString()?.toInt()?:0
-                }
+                    val highestLevelReachedCloud = task.result.value.toString().toInt()
+                    if (highestLevelReachedCloud > highestLevelReachedSharedPref) {
+                        levelPreference.edit().apply {
+                            putInt("highestLevelReached", highestLevelReachedCloud)
+                            apply()
+                        }
+                    }
 
-            if (highestLevelReachedCloud > highestLevelReachedSharedPref) {
-                levelPreference.edit().apply {
-                    putInt("highestLevelReached", highestLevelReachedCloud)
-                    apply()
+                    if (highestLevelReachedCloud < highestLevelReachedSharedPref) {
+                        database.child("users").child(auth.uid!!)
+                            .child("highestLevelReached")
+                            .setValue(highestLevelReachedSharedPref)
+                    }
+                    println("$highestLevelReachedCloud,$highestLevelReachedSharedPref")
+                }
+        }
+    }
+
+    private fun checkSound(buttonClick: Boolean=true) {
+        val settingsPreferences = getSharedPreferences("settingsPref", MODE_PRIVATE)
+        var soundPreferences = settingsPreferences.getBoolean("sound", true)
+
+        if(buttonClick) {
+            settingsPreferences.edit().apply {
+                putBoolean("sound", !soundPreferences)
+                apply()
+            }
+            soundPreferences = !soundPreferences
+        }
+
+        if (soundPreferences) {
+            val intent = Intent(this, SoundService::class.java)
+            btn_sound.setImageResource(R.drawable.gate_false)
+            stopService(intent)
+        }
+        else {
+            val intent = Intent(this, SoundService::class.java)
+            btn_sound.setImageResource(R.drawable.gate_true)
+            startService(intent)
+        }
+    }
+
+    private fun checkGoogle(buttonClick: Boolean=true) {
+        when((auth.currentUser!=null) and (buttonClick)) {
+            true -> {
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+                val googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+                googleSignInClient.signOut()
+                auth.signOut()
+            }
+            false -> {
+                if(buttonClick) {
+                    startActivity(Intent(applicationContext, SignInActivity::class.java))
                 }
             }
-
-            if (highestLevelReachedCloud < highestLevelReachedSharedPref) {
-                database.child("users").child(auth.uid!!)
-                    .child("highestLevelReached")
-                    .setValue(highestLevelReachedSharedPref)
-            }
-            println("$highestLevelReachedCloud,$highestLevelReachedSharedPref")
+        }
+        getProgress()
+        if(auth.currentUser!=null) {
+            btn_google.setImageResource(R.drawable.gate_true)
+        }
+        else {
+            btn_google.setImageResource(R.drawable.gate_false)
         }
     }
 
     //On click listener override
-    override fun onClick(view: View?): Unit {
+    override fun onClick(view: View?) {
         val animation = AnimationUtils.loadAnimation(this, R.anim.wiggle)
         when (view?.id) {
 
             R.id.btn_continue -> {
                 btn_continue.startAnimation(animation)
-                btn_continue.postDelayed({}, 350)
+                btn_continue.postDelayed({}, 200)
 
                 startActivity(
                     Intent(view.context, LevelActivity::class.java)
@@ -96,50 +146,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.btn_levels -> {
                 btn_levels.startAnimation(animation)
-                btn_levels.postDelayed({}, 350)
+                btn_levels.postDelayed({}, 200)
 
                 startActivity(Intent(view.context, LevelsActivity::class.java))
             }
 
             R.id.btn_google -> {
                 btn_google.startAnimation(animation)
-                btn_google.postDelayed({}, 350)
-
-                when(Firebase.auth.currentUser!=null) {
-                    true -> {
-
-                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestIdToken(getString(R.string.default_web_client_id))
-                            .requestEmail()
-                            .build()
-                        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-                        googleSignInClient.signOut()
-                        Firebase.auth.signOut()
-                    }
-                    false -> startActivity(Intent(applicationContext, SignInActivity::class.java))
-                }
+                btn_google.postDelayed({}, 200)
+                checkGoogle()
             }
 
             R.id.btn_sound -> {
 
                 btn_sound.startAnimation(animation)
-                btn_google.postDelayed({}, 350)
-
-                val settingsPreferences = getSharedPreferences("settingsPref", MODE_PRIVATE)
-                val soundPreferences = settingsPreferences.getBoolean("sound", true)
-                settingsPreferences.edit().apply {
-                    putBoolean("sound", !soundPreferences)
-                    apply()
-                }
-                if (soundPreferences) {
-                    val intent = Intent(this, SoundService::class.java)
-                    stopService(intent)
-                }
-                else {
-                    val intent = Intent(this, SoundService::class.java)
-                    startService(intent)
-                }
+                btn_google.postDelayed({}, 200)
+                checkSound()
             }
 
         }

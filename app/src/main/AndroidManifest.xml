@@ -23,11 +23,6 @@
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity
-            android:name=".SettingsActivity"
-            android:exported="true"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
