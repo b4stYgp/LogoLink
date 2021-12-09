@@ -1,87 +1,139 @@
 package com.dis.logolink.gui
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
-import kotlin.math.max
-import kotlin.reflect.typeOf
+import android.content.Intent
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import android.view.animation.AnimationUtils
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 
-//import com.dis.logolink.level.Level1Activity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+    lateinit var database: DatabaseReference
+    lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        ViewCompat.getWindowInsetsController(window.decorView)!!
+            .hide(WindowInsetsCompat.Type.systemBars())
 
         //Onclick listeners
         btn_continue.setOnClickListener(this)
         btn_levels.setOnClickListener(this)
-        btn_settings.setOnClickListener(this)
+        btn_google.setOnClickListener(this)
+        btn_sound.setOnClickListener(this)
 
-        setMaxLevel()
+        //Start Services
+        val settingsPreferences = getSharedPreferences("settingsPref", MODE_PRIVATE)
+        if (settingsPreferences.getBoolean("sound", true)) {
+            val intent = Intent(this, SoundService::class.java)
+            startService(intent)
+        }
+
+        //Check Cloud
+        auth = Firebase.auth
+        database = FirebaseDatabase.getInstance().reference
+        getProgress()
+    }
+
+    private fun getProgress() {
+        auth = Firebase.auth
+        if(auth.currentUser != null) {
+            val highestLevelReachedCloud = database.child("users").child(auth.uid!!)
+                .child("highestLevelReached").get().toString().toInt()
+            val levelPreference = getSharedPreferences("level", MODE_PRIVATE)
+            val highestLevelReachedSharedPref = levelPreference.getInt("highestLevelReached", 1)
+
+            if (highestLevelReachedCloud > highestLevelReachedSharedPref) {
+                levelPreference.edit().apply {
+                    putInt("highestLevelReached", highestLevelReachedCloud)
+                    apply()
+                }
+            }
+            if (highestLevelReachedCloud < highestLevelReachedSharedPref) {
+                database.child("users").child(auth.uid!!).child("highestLevelReached")
+                    .setValue(highestLevelReachedCloud)
+            }
+        }
     }
 
     //On click listener override
     override fun onClick(view: View?): Unit {
-        when(view?.id){
-            R.id.btn_continue ->{
-                val sp = getSharedPreferences("levelPref", MODE_PRIVATE)
-                val maxLevel = sp.getInt("highestLevelReached", 0)
-                if(maxLevel != 0) {
-                    val nextLevel = maxLevel + 1
-                    val nextLevelString = "Level " + nextLevel.toString()
-                    startActivity(Intent(view.context, LevelActivity::class.java)
-                        .putExtra("levelname", nextLevelString))
-                } else{
-                    startActivity(Intent(view.context, LevelActivity::class.java)
-                        .putExtra("levelname", "Level 1"))
+        val animation = AnimationUtils.loadAnimation(this, R.anim.wiggle)
+        when (view?.id) {
+
+            R.id.btn_continue -> {
+                btn_continue.startAnimation(animation)
+                btn_continue.postDelayed({}, 350)
+
+                startActivity(
+                    Intent(view.context, LevelActivity::class.java)
+                        .putExtra("level",
+                            getSharedPreferences("level", MODE_PRIVATE)
+                                .getInt("highestLevelReached", 1)
+                        )
+                )
+            }
+
+            R.id.btn_levels -> {
+                btn_levels.startAnimation(animation)
+                btn_levels.postDelayed({}, 350)
+
+                startActivity(Intent(view.context, LevelsActivity::class.java))
+            }
+
+            R.id.btn_google -> {
+                btn_google.startAnimation(animation)
+                btn_google.postDelayed({}, 350)
+
+                when(Firebase.auth.currentUser!=null) {
+                    true -> {
+
+                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestIdToken(getString(R.string.default_web_client_id))
+                            .requestEmail()
+                            .build()
+                        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+                        googleSignInClient.signOut()
+                        Firebase.auth.signOut()
+                    }
+                    false -> startActivity(Intent(applicationContext, SignInActivity::class.java))
                 }
             }
-            R.id.btn_levels ->{startActivity(Intent(view.context, LevelsActivity::class.java))}
-            R.id.btn_settings ->{startActivity(Intent(view.context, SettingsActivity::class.java))}
-        }
-    }
 
-    //Checks and sets the highest level possible in order to prevent accessing non-existing levels
-    private fun setMaxLevel(){
-        //Set highest level accessible
-        val field = assets.list("")
-        val regex = """level(\d{1}|\d{2}).yml""".toRegex()
-        val allLevels = mutableListOf<String>()
-        var cnt = 0
+            R.id.btn_sound -> {
 
-        //Get last level number
-        field!!.forEach {
-            if(it.matches(regex)){
-                val nmbr = it.substring(
-                    it.indexOfFirst { it -> it.isDigit() },
-                    it.indexOfLast { it -> it.isDigit() } + 1
-                )
-                allLevels.add(cnt, nmbr)
-                cnt++
+                btn_sound.startAnimation(animation)
+                btn_google.postDelayed({}, 350)
+
+                val settingsPreferences = getSharedPreferences("settingsPref", MODE_PRIVATE)
+                val soundPreferences = settingsPreferences.getBoolean("sound", true)
+                settingsPreferences.edit().apply {
+                    putBoolean("sound", !soundPreferences)
+                    apply()
+                }
+                if (soundPreferences) {
+                    val intent = Intent(this, SoundService::class.java)
+                    stopService(intent)
+                }
+                else {
+                    val intent = Intent(this, SoundService::class.java)
+                    startService(intent)
+                }
             }
-        }
-        var highestLevelFound = 0
-        allLevels.forEach {
-            if(highestLevelFound < it.toInt()){
-                highestLevelFound = it.toInt()
-            }
-        }
 
-        //Update "maxLevel"
-        val sp = getSharedPreferences("levelPref", MODE_PRIVATE)
-        val spe = sp.edit()
-        spe.apply{
-            putInt("maxLevel", highestLevelFound)
-            apply()
         }
     }
 }

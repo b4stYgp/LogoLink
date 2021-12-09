@@ -1,4 +1,5 @@
 package com.dis.logolink.parser
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
@@ -11,8 +12,8 @@ class Parser() {
 
     init {
         this.mapper.registerModule(
-            KotlinModule.Builder()
-                .build()
+                KotlinModule.Builder()
+                        .build()
         )
         this.mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
     }

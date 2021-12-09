@@ -20,13 +20,13 @@ class CanvasLoader(screenWidth: Int, screenHeight: Int) {
             //Gate position START
             if(!(activity.LevelLayout.findViewById<View>(element.second as Int) is ImageButton))
             {
-              if(activity.LevelLayout.findViewById<TextView>(element.second as Int *-1).contentDescription!!.equals("Identity"))
-                  elementList.forEach{
-                      if(it.first == element.second as Int)
-                          setStartPosition(activity.findViewById(it.second as Int))
-                  }
+                if(activity.LevelLayout.findViewById<TextView>(element.second as Int *-1).contentDescription!!.equals("Identity"))
+                    elementList.forEach{
+                        if(it.first == element.second as Int)
+                            setStartPosition(activity.findViewById(it.second as Int))
+                    }
                 else
-                  setStartPosition(activity.findViewById(element.second as Int))
+                    setStartPosition(activity.findViewById(element.second as Int))
             }
             else
                 setStartPosition(activity.findViewById(element.second as Int))
@@ -34,8 +34,8 @@ class CanvasLoader(screenWidth: Int, screenHeight: Int) {
                 elementList.forEach {
                     if (it.second == element.first as Int)
                         setEndPostition(activity.findViewById(it.first as Int))
-                    }
                 }
+            }
             else
                 setEndPostition(activity.findViewById(element.first as Int))
 

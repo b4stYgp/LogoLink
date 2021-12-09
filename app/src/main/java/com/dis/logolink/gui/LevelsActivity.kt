@@ -1,10 +1,9 @@
 package com.dis.logolink.gui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 
 class LevelsActivity : AppCompatActivity() {
 
@@ -14,8 +13,9 @@ class LevelsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_levels)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
+        // window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+       //                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         layoutManager = LinearLayoutManager(this)
 
         //set recycle view object
@@ -23,19 +23,14 @@ class LevelsActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
 
         //Set all available levels which are to be displayed in the level selection
-        val sp = getSharedPreferences("levelPref", MODE_PRIVATE)
-        val maxLevel = sp.getInt("highestLevelReached", 0)
-        var possibleLevels = arrayOfNulls<String>(maxLevel + 1)
-        if(maxLevel != 0){
-            for (i in 0..maxLevel){
-                possibleLevels[i] = "Level " + (i + 1).toString()
-            }
-        }else{
-            possibleLevels.set(0, "Level 1")
-        }
-
-        //set adapter
-        adapter = LevelAdapter(possibleLevels)
+        val highestLevelReached = getSharedPreferences("levelPref", MODE_PRIVATE)
+            .getInt("highestLevelReached", 1) - 1
+        val unlockedLevels = (assets.list("levels")
+            ?.sortedBy {
+                    item -> item.filter {
+                it.isDigit()}.toInt()
+            }?.slice(0..highestLevelReached)?: listOf<String>())
+        adapter = LevelAdapter(unlockedLevels)
         recyclerView.adapter = adapter
     }
 }

@@ -6,11 +6,9 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -22,14 +20,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.res.ResourcesCompat
 import com.dis.logolink.editor.models.Component
-import com.dis.logolink.editor.models.IdentityGate
-
 import com.dis.logolink.gui.R
 import com.dis.logolink.editor.models.Layer
 import com.dis.logolink.editor.models.Level
@@ -89,19 +84,19 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 //Input gate
                 if(it.toString().contains("Input", true)){
                     value = inputBtnViewList[
-                            level.defaultInputList.indexOf(it)].id
+                            level.inputList.indexOf(it)].id
                 }
                 //Logic gate
                 else{
                     //Search for gate layer and set value to gate id
                     level.layerList.forEach() {
                         layerIndex = level.layerList.indexOf(it)
-                       it.componentList.forEach() {
+                        it.componentList.forEach() {
                             if (it == componentTemp) {
                                 value =
-                                    layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
-                                        it
-                                    )].id
+                                        layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
+                                                it
+                                        )].id
                             }
                         }
                     }
@@ -121,11 +116,11 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     //TODO: verify
                     var guidelineID = getLayerGuideline(key!!)
                     guideLineTEST.add(
-                        gIndex,
-                        Pair(
-                            guidelineID,
-                            Pair(value!!, key)
-                        )
+                            gIndex,
+                            Pair(
+                                    guidelineID,
+                                    Pair(value!!, key)
+                            )
                     )
                     gIndex++
 
@@ -211,11 +206,11 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
     //Creates input buttons
     private fun createInputView() {
-        for (component in level.defaultInputList) {
+        for (component in level.inputList) {
             val input = ImageButton(context)
             input.layoutParams = LinearLayout.LayoutParams(
-                100,
-                100
+                    100,
+                    100
             )
             //Image
             if (component.setResult())
@@ -226,10 +221,10 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 val btn = imageView
                 if (component.setResult()) {
                     input.setImageResource(R.drawable.lamp_off)
-                    !level.defaultInputList[level.defaultInputList.indexOf(component)]
+                    !level.inputList[level.inputList.indexOf(component)]
                 } else {
                     input.setImageResource(R.drawable.lamp_on)
-                    !level.defaultInputList[level.defaultInputList.indexOf(component)]
+                    !level.inputList[level.inputList.indexOf(component)]
                 }
                 //Change ImageView Ressource by setResult
                 layerViewList.forEachIndexed{layerIndex, layer ->
@@ -240,18 +235,18 @@ class ViewLoader(val activity: Activity,val context: Context) {
                             imageView.setImageResource(R.drawable.gate_false)
                     }
                 }
-                if(level.getLastResult()){
+                if(level.setResult()){
                     popupDialog.setContentView(R.layout.popup_layout_levelcomplete)
                     val btn_exit = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_exit_btn)
                     val btn_continue = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_continue_btn)
 
                     //Update shared pref
-                    var levelNumber = activity.intent.extras!!.get("levelname").toString().filter {
+                    var levelNumber = activity.intent.extras!!.get("level").toString().filter {
                         it.isDigit()
                     }.toInt()
                     //Prevent from accessing non-existing levels
-                    if(sp.getInt("highestLevelReached", 0) < levelNumber
-                        && sp.getInt("maxLevel", 0) > levelNumber) {
+                    if(sp.getInt("highestLevelReached", 1) < levelNumber
+                            && context.assets.list("levels")?.size?:0 > levelNumber) {
                         val spe = sp.edit()
                         spe.apply {
                             putInt("highestLevelReached", levelNumber)
@@ -265,9 +260,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     }
                     btn_continue.setOnClickListener {
                         levelNumber += 1
-                        val nextLevelName = "Level " + levelNumber
+                        val nextLevelName = levelNumber
                         context.startActivity(Intent(it.context, LevelActivity::class.java)
-                            .putExtra("levelname",nextLevelName))
+                                .putExtra("level", nextLevelName))
                         activity.finish()
                     }
                     //popupDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -276,7 +271,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 }
             }
             //get corresponding id
-            input.id = btnViewIds[level.defaultInputList.indexOf(component)]
+            input.id = btnViewIds[level.inputList.indexOf(component)]
             inputBtnViewList.add(input)
             activity.LevelLayout.addView(input)
         }
@@ -286,7 +281,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
     private fun generateIdListsFromLevel(){
         //Button ids
         var btnIds = mutableListOf<Int>()
-        level.defaultInputList.forEach(){
+        level.inputList.forEach(){
             btnIds.add(View.generateViewId())
         }
         btnViewIds = btnIds
@@ -316,7 +311,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
 
     //Create component image
-    private fun createComponentView(component: Component,id: Int) : ImageView {
+    private fun createComponentView(component: Component, id: Int) : ImageView {
         //get image
         val componentView = ImageView(context)
         val className = component::class.java.simpleName
