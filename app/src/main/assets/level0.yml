@@ -1,6 +1,0 @@
-default: [false, false]
-layers:
-  - mapping:    [[0],[1]]
-    components: [ I,  I ]
-  - mapping:    [[0,  1]]
-    components: [  AND  ]

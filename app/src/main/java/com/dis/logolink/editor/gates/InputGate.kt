@@ -1,13 +1,10 @@
 package com.dis.logolink.editor.gates
 
-open class InputGate(inputList: MutableList<Component>) : Component(inputList)  {
+import com.dis.logolink.editor.models.Component
+
+open class InputGate(inputList: MutableList<Component> = mutableListOf()) : Component(inputList)  {
 
     override fun setResult(): Boolean {
-        return result
-    }
-
-    override fun not(): Component {
-        result = !result
-        return this
+        return !inverted
     }
 }

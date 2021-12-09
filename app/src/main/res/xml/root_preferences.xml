@@ -1,14 +1,28 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/settings_header">
+    <PreferenceCategory
+        app:title="@string/settings_header">
 
-            <SwitchPreferenceCompat
-                app:key="dark_mode"
-                app:summaryOff="@string/darkMode_SummaryOFF"
-                app:summaryOn="@string/darkMode_SummaryON"
-                app:title="@string/darkMode_Title"
-                />
+        <SwitchPreferenceCompat
+            app:key="dark_mode"
+            app:defaultValue="false"
+            app:summaryOff="@string/darkMode_SummaryOFF"
+            app:summaryOn="@string/darkMode_SummaryON"
+            app:title="@string/darkMode_Title"
+            />
+
+        <SwitchPreferenceCompat
+            app:key="google_signIn"
+            app:summaryOff="@string/googleSignIn_SummaryOFF"
+            app:summaryOn="@string/googleSignIn_SummaryON"
+            app:title="@string/googleSignIn_Title"
+            />
+
+        <SeekBarPreference
+            app:key="music"
+            app:title="@string/music_Title"
+            />
 
     </PreferenceCategory>
 

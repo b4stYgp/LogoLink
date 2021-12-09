@@ -1,9 +1,9 @@
 package com.dis.logolink.gui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 
 class LevelsActivity : AppCompatActivity() {
 
@@ -14,14 +14,23 @@ class LevelsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_levels)
 
+        // window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+       //                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         layoutManager = LinearLayoutManager(this)
 
         //set recycle view object
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = layoutManager
 
-        //set adapter
-        adapter = LevelAdapter()
+        //Set all available levels which are to be displayed in the level selection
+        val highestLevelReached = getSharedPreferences("levelPref", MODE_PRIVATE)
+            .getInt("highestLevelReached", 1) - 1
+        val unlockedLevels = (assets.list("levels")
+            ?.sortedBy {
+                    item -> item.filter {
+                it.isDigit()}.toInt()
+            }?.slice(0..highestLevelReached)?: listOf<String>())
+        adapter = LevelAdapter(unlockedLevels)
         recyclerView.adapter = adapter
     }
 }

@@ -5,42 +5,33 @@
     android:layout_height="100dp"
     app:cardCornerRadius="12dp"
     android:layout_margin="5dp"
-    app:cardElevation="3dp"
+    app:cardElevation="0dp"
     app:contentPadding="4dp"
-    app:cardBackgroundColor="#327fa8"
+    app:cardBackgroundColor="@android:color/transparent"
+
     >
     <!-- Constraint layout /-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/levelx_Constraint"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!-- Gate icon /-->
-        <ImageView
-            android:id="@+id/levelx_imageView"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:contentDescription="@string/level_icon_description"
-
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/levelx_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_button"
+        >
 
         <!-- Level text /-->
         <TextView
             android:id="@+id/levelx_name"
-            android:layout_width="250dp"
-            android:layout_height="75dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="50sp"
             android:fontFamily="@font/font_arcadeclassic"
-            app:layout_constraintHorizontal_bias="0.4"
-            android:gravity="center"
+            android:textColor="@color/white"
+            android:gravity="end"
+            android:layout_marginRight="25dp"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/levelx_imageView"
+            app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

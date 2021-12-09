@@ -1,16 +1,11 @@
 package com.dis.logolink.editor.gates
 
-class OrGate(inputList: MutableList<Component>) : Component(inputList) {
+import com.dis.logolink.editor.models.Component
+
+class OrGate(inputList: MutableList<Component>,) : Component(inputList) {
 
     override fun setResult(): Boolean {
-        result = false
-        inputList.forEach(){
-            result = result.or(it.setResult())
-        }
+        result = (inputList.any{it.setResult()} != inverted)
         return result
-    }
-
-    override operator fun not() : NorGate {
-        return NorGate(inputList)
     }
 }

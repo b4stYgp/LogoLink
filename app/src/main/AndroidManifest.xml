@@ -10,12 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LogoLink">
         <activity
-            android:name="com.dis.logolink.level.Level1Activity"
-            android:exported="true"
+            android:name=".LevelActivity"
+            android:screenOrientation="landscape"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="landscape"/>
+            android:exported="true" />
         <activity
             android:name=".LevelsActivity"
+            android:screenOrientation="portrait"
+            android:exported="true" />
+        <activity
+            android:name=".SignInActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".SettingsActivity"
@@ -24,6 +29,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".SoundService"/>
     </application>
 
 </manifest>
