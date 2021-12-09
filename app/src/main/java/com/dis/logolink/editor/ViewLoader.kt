@@ -158,7 +158,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Draws each line from gate to gate
     fun drawLines() {
         val canvasLoader = CanvasLoader(context.resources.displayMetrics.widthPixels, context.resources.displayMetrics.heightPixels)
-        val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity)
+        val bitmap = canvasLoader.calculateLinePositions(gateInputConnections, activity,layerViewList,guidelineList)
         //val bitmap = canvasLoader.calculateLinePositionsTEST(guideLineTEST, activity)
         val background = ImageView(context)
         background.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
