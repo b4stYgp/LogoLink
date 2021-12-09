@@ -244,9 +244,12 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     var levelNumber = activity.intent.extras!!.get("level").toString().filter {
                         it.isDigit()
                     }.toInt()
+                    println("qqq")
+                    println(levelNumber)
+                    println(sp.getInt("highestLevelReached", 1))
                     //Prevent from accessing non-existing levels
-                    if(sp.getInt("highestLevelReached", 1) < levelNumber
-                            && context.assets.list("levels")?.size?:0 > levelNumber) {
+                    if(sp.getInt("highestLevelReached", 1) <= levelNumber
+                            && (context.assets.list("levels")?.size?:0)+1 > levelNumber) {
                         val spe = sp.edit()
                         spe.apply {
                             putInt("highestLevelReached", levelNumber)

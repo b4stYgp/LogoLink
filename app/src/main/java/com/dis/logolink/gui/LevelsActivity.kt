@@ -23,13 +23,15 @@ class LevelsActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
 
         //Set all available levels which are to be displayed in the level selection
-        val highestLevelReached = getSharedPreferences("levelPref", MODE_PRIVATE)
+        val highestLevelReachedAsAssetsIndex = getSharedPreferences("levelPref", MODE_PRIVATE)
             .getInt("highestLevelReached", 1) - 1
+
+
         val unlockedLevels = (assets.list("levels")
             ?.sortedBy {
                     item -> item.filter {
                 it.isDigit()}.toInt()
-            }?.slice(0..highestLevelReached)?: listOf<String>())
+            }?.slice(0..highestLevelReachedAsAssetsIndex)?: listOf<String>())
         adapter = LevelAdapter(unlockedLevels)
         recyclerView.adapter = adapter
     }

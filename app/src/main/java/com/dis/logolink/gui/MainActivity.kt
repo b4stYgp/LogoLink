@@ -48,12 +48,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getProgress() {
-        auth = Firebase.auth
         if(auth.currentUser != null) {
-            val highestLevelReachedCloud = database.child("users").child(auth.uid!!)
-                .child("highestLevelReached").get().toString().toInt()
-            val levelPreference = getSharedPreferences("level", MODE_PRIVATE)
+
+            val levelPreference = getSharedPreferences("levelPref", MODE_PRIVATE)
             val highestLevelReachedSharedPref = levelPreference.getInt("highestLevelReached", 1)
+            var highestLevelReachedCloud = 0
+
+            database.child("users").child(auth.uid!!)
+                .child("highestLevelReached").get()
+                .addOnCompleteListener{ task ->
+                    highestLevelReachedCloud = task.result.value?.toString()?.toInt()?:0
+                }
 
             if (highestLevelReachedCloud > highestLevelReachedSharedPref) {
                 levelPreference.edit().apply {
@@ -61,10 +66,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     apply()
                 }
             }
+
             if (highestLevelReachedCloud < highestLevelReachedSharedPref) {
-                database.child("users").child(auth.uid!!).child("highestLevelReached")
-                    .setValue(highestLevelReachedCloud)
+                database.child("users").child(auth.uid!!)
+                    .child("highestLevelReached")
+                    .setValue(highestLevelReachedSharedPref)
             }
+            println("$highestLevelReachedCloud,$highestLevelReachedSharedPref")
         }
     }
 
@@ -80,7 +88,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(
                     Intent(view.context, LevelActivity::class.java)
                         .putExtra("level",
-                            getSharedPreferences("level", MODE_PRIVATE)
+                            getSharedPreferences("levelPref", MODE_PRIVATE)
                                 .getInt("highestLevelReached", 1)
                         )
                 )
