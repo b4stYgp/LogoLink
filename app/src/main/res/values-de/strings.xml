@@ -1,0 +1,32 @@
+<resources>
+<!-- MainActivity GUI -->
+    <string name="app_name">LogoLink</string>
+    <string name="btn_continue">Weiter</string>
+    <string name="btn_levels">Levels</string>
+    <string name="btn_settings">Einstellungen</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="logoDescription">Logolink logo</string>
+
+        <!-- LevelsActivity -->
+    <string name="levels_title">Waehle ein Level aus!</string>
+    <string name="level_name">Level %$i</string>
+
+        <!-- Individual Level Activity -->
+    <string name="level_complete">Level abgeschlossen!</string>
+    <string name="btn_exit">Zurueck</string>
+
+        <!-- Gate information -->
+    <string name="And_info">Der Ausgang liefert eine 1, wenn an allen Eingaengen eine 1 anliegt.</string>
+    <string name="Or_info">Der Ausgang liefert eine 1, sobald an einem der beiden Eingaenge eine 1 anliegt.</string>
+    <string name="Not_info">Invertiert den Eingang.</string>
+    <string name="Nor_info">Der Ausgang liefert eine 1, wenn an beiden Eingaengen eine 0 anliegt.</string>
+    <string name="Xnor_info">Der Ausgang liefert eine 1, wenn die Anzahl an 1en am Eingang gerade ist.</string>
+    <string name="Nand_info">Ein NAND-Gatter gibt am Ausgang 0 aus, wenn alle Eingänge 1 sind.</string>
+
+        <!-- SettingsActivity -->
+    <string name="settings_header">Einstellungen</string>
+
+    <string name="darkMode_Title">Dark Mode einschalten</string>
+    <string name="darkMode_SummaryON">Dark Mode an</string>
+    <string name="darkMode_SummaryOFF">Dark Mode aus</string>
+</resources>
