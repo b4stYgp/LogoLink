@@ -23,7 +23,7 @@ class LevelAdapter(var levelNames: List<String?>): RecyclerView.Adapter<LevelAda
                 //open LevelActivity
                 it.context.startActivity(
                     Intent(it.context, LevelActivity::class.java)
-                        .putExtra("level",
+                        .putExtra("levelname",
                             it.levelx_name.text.toString().substringAfter("level")))
             }
         }

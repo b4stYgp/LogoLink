@@ -3,6 +3,8 @@ package com.dis.logolink.gui
 import android.os.Bundle
 import android.view.View
 import android.content.Intent
+import android.os.Build
+import android.view.WindowManager
 import androidx.core.view.ViewCompat
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.ktx.auth
@@ -25,8 +27,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ViewCompat.getWindowInsetsController(window.decorView)!!
-            .hide(WindowInsetsCompat.Type.systemBars())
+        when (Build.VERSION.SDK_INT) {
+            in Int.MAX_VALUE..30 -> {
+                ViewCompat . getWindowInsetsController (window.decorView)!!
+                    .hide(WindowInsetsCompat.Type.systemBars())
+            }
+            in Int.MAX_VALUE..29 -> window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
         //Onclick listeners
         btn_continue.setOnClickListener(this)

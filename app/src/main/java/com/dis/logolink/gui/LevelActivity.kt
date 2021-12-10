@@ -23,7 +23,7 @@ class LevelActivity() : AppCompatActivity() {
                 assets.list("levels")!!.find {
                     it.substringBefore(".")
                         .equals(
-                            "level${intent.extras!!.get("level")}",
+                            "level${intent.extras!!.get("levelname")}",
                             true
                         )
                 }!!

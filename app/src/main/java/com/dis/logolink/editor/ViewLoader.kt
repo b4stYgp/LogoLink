@@ -251,8 +251,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
                         it.isDigit()
                     }.toInt()
                     //Prevent from accessing non-existing levels
-                    if(sp.getInt("highestLevelReached", 0) < levelNumber
-                        && sp.getInt("maxLevel", 0) > levelNumber) {
+                    if(sp.getInt("highestLevelReached", 1) < levelNumber
+                        && context.assets.list("levels")?.size?:0 > levelNumber) {
                         val spe = sp.edit()
                         spe.apply {
                             putInt("highestLevelReached", levelNumber)
@@ -266,7 +266,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     }
                     btn_continue.setOnClickListener {
                         levelNumber += 1
-                        val nextLevelName = "Level " + levelNumber
+                        val nextLevelName = levelNumber
                         context.startActivity(Intent(it.context, LevelActivity::class.java)
                             .putExtra("levelname",nextLevelName))
                         activity.finish()

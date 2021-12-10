@@ -2,7 +2,7 @@
 <!-- MainActivity GUI -->
     <string name="app_name">LogoLink</string>
     <string name="btn_continue">Weiter</string>
-    <string name="btn_levels">Levels</string>
+    <string name="btn_levels">Level</string>
     <string name="btn_settings">Einstellungen</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="logoDescription">Logolink logo</string>
