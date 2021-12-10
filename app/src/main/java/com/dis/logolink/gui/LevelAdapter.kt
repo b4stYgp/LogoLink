@@ -1,45 +1,43 @@
 package com.dis.logolink.gui
 
-import android.content.Intent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
+import android.view.ViewGroup
+import android.content.Intent
+import android.widget.TextView
+import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
-//import com.dis.logolink.level.Level1Activity
 import kotlinx.android.synthetic.main.levels_item.view.*
 
-class LevelAdapter(val _levelNames: Array<String?>): RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
-    //Filler levelNames
-    //var levelNames = arrayOf("Level 1", "Level 2", "Level 3", "Level 4"
-      //  , "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10", "Level 11", "Level 12")
-    var levelNames = _levelNames
+class LevelAdapter(var levelNames: List<String?>): RecyclerView.Adapter<LevelAdapter.ViewHolder>() {
 
     //View holder class with attributes and init function
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var itemTitle: TextView
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        var itemTitle: TextView = itemView.findViewById(R.id.levelx_name)
 
         init{
-            itemTitle = itemView.findViewById(R.id.levelx_name)
 
             //On click listener
             itemView.setOnClickListener{
                 Toast.makeText(it.context, it.levelx_name.text, Toast.LENGTH_LONG).show()
-                //open LevelActivtiy
-                it.context.startActivity(Intent(it.context, LevelActivity::class.java).putExtra("levelname",it.levelx_name.text))
+                //open LevelActivity
+                it.context.startActivity(
+                    Intent(it.context, LevelActivity::class.java)
+                        .putExtra("level",
+                            it.levelx_name.text.toString().substringAfter("level")))
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LevelAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.levels_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.levels_item, parent, false)
         return ViewHolder(view)
     }
 
     //Set holder attributes
     override fun onBindViewHolder(holder: LevelAdapter.ViewHolder, position: Int) {
-        holder.itemTitle.text = levelNames[position]
+        holder.itemTitle.text = levelNames[position]!!.substringBefore(".")
     }
 
     override fun getItemCount(): Int {

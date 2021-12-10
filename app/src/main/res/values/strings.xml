@@ -16,13 +16,13 @@
     <string name="level_complete">Level complete!</string>
     <string name="btn_exit">Exit</string>
 
-        <!-- Gate information -->
-        <string name="And_info">A HIGH output (1) results only if all the inputs to the AND gate are HIGH (1).</string>
-        <string name="Or_info">A HIGH output (1) results if one or both the inputs to the gate are HIGH (1).</string>
-        <string name="Not_info">Inverts the input.</string>
-        <string name="Nor_info">A HIGH output (1) results if both the inputs to the gate are LOW (0).</string>
-        <string name="Xnor_info">A HIGH output (1) results if both of the inputs to the gate are the same.</string>
-        <string name="Nand_info">A LOW (0) output results only if all the inputs to the gate are HIGH (1).</string>
+    <!-- Gate information -->
+    <string name="And_info">A HIGH output (1) results only if all the inputs to the AND gate are HIGH (1).</string>
+    <string name="Or_info">A HIGH output (1) results if one or both the inputs to the gate are HIGH (1).</string>
+    <string name="Not_info">Inverts the input.</string>
+    <string name="Nor_info">A HIGH output (1) results if both the inputs to the gate are LOW (0).</string>
+    <string name="Xnor_info">A HIGH output (1) results when the number of true inputs is odd.</string>
+    <string name="Nand_info">A LOW (0) output results only if all the inputs to the gate are HIGH (1).</string>
 
     <!-- SettingsActivity -->
     <string name="settings_header">Settings</string>
@@ -30,4 +30,11 @@
     <string name="darkMode_Title">Enable Dark Mode</string>
     <string name="darkMode_SummaryON">Dark Mode Enabled</string>
     <string name="darkMode_SummaryOFF">Dark Mode Disabled</string>
+
+    <string name="googleSignIn_Title">Enable Google Account</string>
+    <string name="googleSignIn_SummaryON">Google Account Enabled</string>
+    <string name="googleSignIn_SummaryOFF">Google Account Disabled</string>
+
+    <string name="music_Title">Enable music</string>
+
 </resources>

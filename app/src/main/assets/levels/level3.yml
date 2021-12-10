@@ -1,0 +1,8 @@
+default: [ false, false, false, true ]
+layers:
+  - mapping: [ [ 0,1 ],[ 2, 3 ] ]
+    components: [ OR, AND ]
+  - mapping: [ [ 0 ],[ 1 ] ]
+    components: [ NOT ,NOT ]
+  - mapping: [ [ 0,1 ] ]
+    components: [ NAND ]

@@ -13,15 +13,15 @@
     <string name="level_name">Nivel %$i</string>
 
     <!-- Individual Level Activity -->
-    <string name="level_complete">¡Nivel completada!</string>
-    <string name="btn_exit">Volver</string>
-        <!-- Gate information -->
-        <string name="And_info">Esta tendrá una salida ALTA (1), únicamente cuando los valores de ambas entradas sean ALTOS.</string>
-        <string name="Or_info">Cuando al menos una o ambas entradas están en 1 o en ALTA, su SALIDA va a estar en 1 o en ALTA.</string>
-        <string name="Not_info">La función física del inversor, es la de cambiar en su salida el nivel del voltaje de su entrada.</string>
-        <string name="Nor_info">Cuando una sola de sus entradas o ambas están en 1 o en ALTA, su SALIDA va a estar en 0 o en BAJA.</string>
-        <string name="Xnor_info">Una salida ALTA (1) resulta si ambas las entradas a la puerta son las mismas.</string>
-        <string name="Nand_info">cuando al menos una sola de sus entradas o ambas están en 0 o en BAJA, su SALIDA va a estar en 1 o en ALTA.</string>
+    <string name="level_complete">Level complete!</string>
+    <string name="btn_exit">Exit</string>
+    <!-- Gate information -->
+    <string name="And_info">and info todo</string>
+    <string name="Or_info">or info todo</string>
+    <string name="Not_info">not info todo</string>
+    <string name="Nor_info">nor info todo</string>
+    <string name="Xnor_info">xnor info todo</string>
+    <string name="Nand_info">nand info todo</string>
 
     <!-- SettingsActivity -->
     <string name="settings_header">Configuración</string>
@@ -29,4 +29,11 @@
     <string name="darkMode_Title">Encender Dark Mode</string>
     <string name="darkMode_SummaryON">Dark Mode encendido</string>
     <string name="darkMode_SummaryOFF">Dark Mode apagado</string>
+
+    <string name="googleSignIn_Title">Encender Google Account</string>
+    <string name="googleSignIn_SummaryON">Google Account encendido</string>
+    <string name="googleSignIn_SummaryOFF">Google Account apagado</string>
+
+    <string name="music_Title">Encender music</string>
+
 </resources>
