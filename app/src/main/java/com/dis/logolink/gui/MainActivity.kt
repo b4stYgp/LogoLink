@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                 startActivity(
                     Intent(view.context, LevelActivity::class.java)
-                        .putExtra("level",
+                        .putExtra("levelname",
                             getSharedPreferences("levelPref", MODE_PRIVATE)
                                 .getInt("highestLevelReached", 1)
                         )
