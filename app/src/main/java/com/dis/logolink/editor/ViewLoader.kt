@@ -36,6 +36,7 @@ import com.dis.logolink.editor.models.Level
 import com.dis.logolink.gui.CanvasLoader
 import com.dis.logolink.gui.LevelActivity
 import kotlinx.android.synthetic.main.activity_level.*
+import kotlin.concurrent.thread
 
 class ViewLoader(val activity: Activity,val context: Context) {
     lateinit var level: Level
@@ -272,8 +273,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
                         activity.finish()
                     }
                     //popupDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    Thread.sleep(250)
                     popupDialog.show()
-
                 }
             }
             //get corresponding id
