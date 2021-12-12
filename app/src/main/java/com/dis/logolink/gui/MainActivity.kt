@@ -101,6 +101,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 false -> btn_sound.setImageResource(R.drawable.gate_false)
             }
         }
+        else
+            btn_sound.setImageResource(R.drawable.gate_false)
+
     }
 
     private fun checkGoogle() {
