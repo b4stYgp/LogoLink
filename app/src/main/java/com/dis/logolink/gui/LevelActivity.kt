@@ -20,13 +20,13 @@ class LevelActivity() : AppCompatActivity() {
 
         val level = Parser().parse(
             assets.open("levels/"+
-                assets.list("levels")!!.find {
-                    it.substringBefore(".")
-                        .equals(
-                            "level${intent.extras!!.get("levelname")}",
-                            true
-                        )
-                }!!
+                    assets.list("levels")!!.find {
+                        it.substringBefore(".")
+                            .equals(
+                                "level${intent.extras!!.get("levelname")}",
+                                true
+                            )
+                    }!!
             )
         )
 

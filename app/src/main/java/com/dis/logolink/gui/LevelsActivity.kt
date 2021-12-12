@@ -15,7 +15,7 @@ class LevelsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_levels)
 
         // window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-       //                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         layoutManager = LinearLayoutManager(this)
 
         //set recycle view object
