@@ -1,7 +1,11 @@
 package com.dis.logolink.gui
 
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -13,6 +17,16 @@ class LevelsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_levels)
+        when (Build.VERSION.SDK_INT) {
+            in Int.MAX_VALUE..30 -> {
+                ViewCompat . getWindowInsetsController (window.decorView)!!
+                    .hide(WindowInsetsCompat.Type.systemBars())
+            }
+            in Int.MAX_VALUE..29 -> window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
         // window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         //                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
