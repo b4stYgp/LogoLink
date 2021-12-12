@@ -18,6 +18,7 @@ class SignInActivity : Activity() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -27,31 +28,25 @@ class SignInActivity : Activity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = Firebase.auth
-        signIn()
+        when (auth.currentUser == null) {
+            true ->  signIn()
+            false -> finish()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == 9001) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!)
+                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+                auth.signInWithCredential(credential)
             } catch (e: ApiException) {
+                println("API EXCEPTION")
             }
         }
         finish()
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                }
-            }
     }
 
     private fun signIn() {

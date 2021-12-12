@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.13425925925925927" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_levels.xml" value="0.2015625" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/levels_item.xml" value="0.19791666666666666" />
@@ -15,7 +16,7 @@
         <entry key="app/src/main/res/layout/activity_level.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_level1.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_levels.xml" value="0.1692734611503532" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/levels_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/popup_layout_levelcomplete.xml" value="0.17572463768115942" />
         <entry key="app/src/main/res/layout/settings_activity.xml" value="0.335" />
