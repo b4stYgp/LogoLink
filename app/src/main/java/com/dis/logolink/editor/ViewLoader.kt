@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Insets
+import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -215,9 +216,10 @@ class ViewLoader(val activity: Activity,val context: Context) {
         for (component in level.defaultInputList) {
             val input = ImageButton(context)
             input.layoutParams = LinearLayout.LayoutParams(
-                100,
-                100
+                WRAP_CONTENT,
+                WRAP_CONTENT
             )
+            input.background = null
             //Image
             if (component.setResult())
                 input.setImageResource(R.drawable.lamp_on)
