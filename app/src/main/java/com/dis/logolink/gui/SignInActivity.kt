@@ -37,13 +37,14 @@ class SignInActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 9001) {
+            // reference to firebase documentation for requestCodes
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
                 auth.signInWithCredential(credential)
             } catch (e: ApiException) {
-                println("API EXCEPTION")
+                //TODO exception handling
             }
         }
         finish()
