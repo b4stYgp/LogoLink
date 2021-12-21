@@ -13,16 +13,15 @@ class Level(val defaultInputList: MutableList<Component>, val  layerList :Mutabl
 
         str += "InputLayer:"
         defaultInputList.forEach() { component ->
-            str += "${component}"
+            str += "$component"
         }
         str += "\n\n"
         layerList.forEach() { layer ->
             str += "Layer: ${maxSize-index}"
-            str += "${layer}"
+            str += "$layer"
             str += "\n\n"
             index--
         }
-
 
         assert(layerList.last().componentList.size == 1)
         val result = layerList.last().componentList[0].setResult()

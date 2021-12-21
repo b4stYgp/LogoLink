@@ -1,17 +1,17 @@
 package com.dis.logolink.gui
 
-import android.content.ComponentName
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.Build
 import android.os.IBinder
+import android.content.Intent
+import android.content.Context
 import android.view.WindowManager
 import androidx.core.view.ViewCompat
+import android.content.ComponentName
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.ktx.auth
+import android.content.ServiceConnection
 import android.view.animation.AnimationUtils
 import com.google.firebase.auth.FirebaseAuth
 import androidx.core.view.WindowInsetsCompat
@@ -21,9 +21,6 @@ import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.GoogleAuthProvider
-
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -32,7 +29,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var soundService: SoundService
     private var soundServiceIsBound: Boolean = false
+
     private val connection = object : ServiceConnection {
+        //create callback for Service for connect and disconnect
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             val binder = service as SoundService.LocalBinder
             soundService = binder.getService()
@@ -54,6 +53,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //full screen for diffrent devices
         when (Build.VERSION.SDK_INT) {
             in Int.MAX_VALUE..30 -> {
                 ViewCompat . getWindowInsetsController (window.decorView)!!
@@ -84,7 +84,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun googleSignOut() {
+        //TODO create Service class instead of LoginActivity
         updateProgress()
+        //before sign-out check level progress
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
@@ -101,9 +103,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 false -> btn_sound.setImageResource(R.drawable.gate_false)
             }
         }
-        else
+        else {
             btn_sound.setImageResource(R.drawable.gate_false)
-
+        }
     }
 
     private fun checkGoogle() {
@@ -117,6 +119,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateProgress() {
+        //compare and update level progress saved in FireBase database to shared Preferences
         val levelPreference = getSharedPreferences("levelPref", MODE_PRIVATE)
         val highestLevelSharedPref = levelPreference.getInt("highestLevelReached", 1)
         database.child("users").child(auth.uid!!)
@@ -139,7 +142,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        println(auth.currentUser)
         checkGoogle()
     }
 
@@ -150,6 +152,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_continue -> {
                 btn_continue.startAnimation(animation)
                 btn_continue.postDelayed({}, 400)
+                //load LevelActivity based on highest level reached
                 startActivity(
                     Intent(view.context, LevelActivity::class.java)
                         .putExtra("levelname",
@@ -176,6 +179,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 btn_google.postDelayed({}, 400)
                 if(soundServiceIsBound) {
                     soundService.changeSoundPreferences()
+                    //change to different track list depending on Activity
                     checkSound()
                 }
             }
