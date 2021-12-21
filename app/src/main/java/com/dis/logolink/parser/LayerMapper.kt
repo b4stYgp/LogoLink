@@ -1,16 +1,5 @@
 package com.dis.logolink.parser
-
-import com.dis.logolink.editor.*
 import com.dis.logolink.editor.models.*
-
-/**
- * class Layer represents one column of Components of a Level
- * @param mappingList represents the mapping of inputs to 'Components'.
- * element of 'mappingList' is a 'MutableList' of 'inputList' indices.
- * element's index acts as a foreign key to a 'Component' with the same index in 'ComponentList'.
- * @param inputList represents all possible inputs to 'Components' of this Layer
- * @param componentNameList is a sequential list of names of 'Components' in this Layer
- */
 
 class LayerMapper(){
 
