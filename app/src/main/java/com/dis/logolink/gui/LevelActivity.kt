@@ -18,7 +18,7 @@ class LevelActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_level)
         when (Build.VERSION.SDK_INT) {
-            in Int.MAX_VALUE..30 -> {
+            in Int.MAX_VALUE..30 -> {  //consider deprecated FlagFullscreen
                 ViewCompat . getWindowInsetsController (window.decorView)!!
                     .hide(WindowInsetsCompat.Type.systemBars())
             }

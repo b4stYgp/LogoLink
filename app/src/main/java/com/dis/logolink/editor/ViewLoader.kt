@@ -6,11 +6,9 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -22,13 +20,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.res.ResourcesCompat
 import com.dis.logolink.editor.models.Component
-import com.dis.logolink.editor.models.IdentityGate
 
 import com.dis.logolink.gui.R
 import com.dis.logolink.editor.models.Layer
@@ -37,6 +33,9 @@ import com.dis.logolink.gui.CanvasLoader
 import com.dis.logolink.gui.LevelActivity
 import kotlinx.android.synthetic.main.activity_level.*
 
+
+//generates Views to corresponding gates in Level
+//handles the positioning and creates a dictionary for drawing on canvas
 class ViewLoader(val activity: Activity,val context: Context) {
     lateinit var level: Level
     lateinit private var btnViewIds : List<Int>
@@ -52,6 +51,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
     val guideLineTEST = mutableListOf<Pair< Int, Pair<Int, Int>>>()
     val popupDialog: Dialog = Dialog(context)
 
+    //
     fun mapLevelToView(){
         generateIdListsFromLevel()
         createInputView()
