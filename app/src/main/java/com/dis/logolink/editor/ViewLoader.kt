@@ -65,21 +65,21 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Generates ids for each and every component present on the screen
     private fun generateIdListsFromLevel(){
         //Button ids
-        var btnIds = mutableListOf<Int>()
+        val btnIds = mutableListOf<Int>()
         level.defaultInputList.forEach(){
             btnIds.add(View.generateViewId())
         }
         btnViewIds = btnIds
 
         //Component ids
-        var compIdsList = mutableListOf<MutableList<Int>>()
+        val compIdsList = mutableListOf<MutableList<Int>>()
         for (input in level.layerList){
             compIdsList.add(generateCompIds(input))
         }
         cmpViewIdsList=compIdsList
 
         //Guideline ids
-        var glIds = mutableListOf<Int>()
+        val glIds = mutableListOf<Int>()
         for(layer in level.layerList)
             glIds.add(View.generateViewId())
         glViewIds=glIds
@@ -172,6 +172,47 @@ class ViewLoader(val activity: Activity,val context: Context) {
             }
             layerViewList.add(compViewList)
         }
+    }
+
+    //Create component view with Image Ressource
+    private fun createComponentView(component: Component,id: Int) : ImageView {
+        //get image
+        val componentView = ImageView(context)
+        val className = component::class.java.simpleName
+        var imageRessource : Any
+        if(component.setResult())
+            imageRessource = R.drawable.gate_true
+        else
+            imageRessource = R.drawable.gate_false
+
+        componentView.contentDescription = className.substringBefore("Gate")
+
+        if(!componentView.contentDescription.contains("Identity"))
+            componentView.setImageResource(imageRessource)
+
+        //determine size
+        var heightMod = 0
+        level.layerList.forEach(){
+            if(it.componentList.contains(component))
+                heightMod = it.componentList.size
+        }
+        // === Too big! -> AND Gate H:360, W:570 ===
+        val height = getScreenHeight() / heightMod
+        val width = getScreenWidth()/(level.layerList.size+1)
+        // ===
+
+        componentView.layoutParams = LinearLayout.LayoutParams(250,175)
+        componentView.id = id
+
+        //Add infobox popup
+        componentView.setOnClickListener {
+            popupDialog.setContentView(R.layout.popup_layout_info)
+            infoBoxSetUp(componentView)
+            popupDialog.show()
+        }
+
+        activity.LevelLayout.addView(componentView)
+        return componentView
     }
 
     //Creates guidelines for each layer
@@ -292,22 +333,18 @@ class ViewLoader(val activity: Activity,val context: Context) {
                 //Logic gate
                 else{
                     //Search for gate layer and set value to gate id
-                    level.layerList.forEach() {
-                        layerIndex = level.layerList.indexOf(it)
-                       it.componentList.forEach() {
-                            if (it == componentTemp) {
-                                value =
-                                    layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(
-                                        it
-                                    )].id
+                    level.layerList.forEachIndexed() { layerIndex, layer ->
+                       layer.componentList.forEachIndexed() { componentIndex, component ->
+                            if (component == componentTemp) {
+                                value = layerViewList[layerIndex][componentIndex].id
                             }
                         }
                     }
                     //Corresponding layer found? If so, then and set value to gate id
                     if(layerIndex != null){
-                        level.layerList[layerIndex!!].componentList.forEach(){
-                            if(it == componentTemp){
-                                value = layerViewList[layerIndex!!][level.layerList[layerIndex!!].componentList.indexOf(it)].id
+                        level.layerList[layerIndex!!].componentList.forEachIndexed(){ componentIndex, component ->
+                            if(component == componentTemp){
+                                value = layerViewList[layerIndex!!][componentIndex].id
                             }
                         }
                     }
@@ -317,7 +354,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
                     gateInputConnections.add(listIndex, Pair(key, value!!))
 
                     //TODO: verify
-                    var guidelineID = getLayerGuideline(key!!)
+                    val guidelineID = getLayerGuideline(key)
                     guideLineTEST.add(
                         gIndex,
                         Pair(
@@ -340,17 +377,15 @@ class ViewLoader(val activity: Activity,val context: Context) {
     //Get the corresponding layer guideline
     //Returns: Guideline id
     fun getLayerGuideline(componentLeftOfGuidelineID: Int): Int{
-        var guidelineLayerIndex = 0
-        var layerCount = 0
-        layerViewList.forEach() {
+        var guideId = 0
+        layerViewList.forEachIndexed() {guidelineLayerIndex, it ->
             it.forEach(){
                 if(it.id == componentLeftOfGuidelineID){
-                    guidelineLayerIndex = layerCount
+                    guideId = guidelineList[guidelineLayerIndex].id
                 }
             }
-            layerCount++
         }
-        return guidelineList[guidelineLayerIndex].id
+        return guideId;
     }
 
     //Draws each line from gate to gate
@@ -369,53 +404,14 @@ class ViewLoader(val activity: Activity,val context: Context) {
 
     //Generate ids for each component
     private fun generateCompIds(layer: Layer): MutableList<Int> {
-        var compIds = mutableListOf<Int>()
+        val compIds = mutableListOf<Int>()
         for (component in layer.componentList) {
             compIds.add(View.generateViewId())
         }
         return compIds
     }
 
-    //Create component view with Image Ressource
-    private fun createComponentView(component: Component,id: Int) : ImageView {
-        //get image
-        val componentView = ImageView(context)
-        val className = component::class.java.simpleName
-        var imageRessource : Any
-        if(component.setResult())
-            imageRessource = R.drawable.gate_true
-        else
-            imageRessource = R.drawable.gate_false
 
-        componentView.contentDescription = className.substringBefore("Gate")
-
-        if(!componentView.contentDescription.contains("Identity"))
-            componentView.setImageResource(imageRessource)
-
-        //determine size
-        var heightMod = 0
-        level.layerList.forEach(){
-            if(it.componentList.contains(component))
-                heightMod = it.componentList.size
-        }
-        // === Too big! -> AND Gate H:360, W:570 ===
-        val height = getScreenHeight() / heightMod
-        val width = getScreenWidth()/(level.layerList.size+1)
-        // ===
-
-        componentView.layoutParams = LinearLayout.LayoutParams(250,175)
-        componentView.id = id
-
-        //Add infobox popup
-        componentView.setOnClickListener {
-            popupDialog.setContentView(R.layout.popup_layout_info)
-            infoBoxSetUp(componentView)
-            popupDialog.show()
-        }
-
-        activity.LevelLayout.addView(componentView)
-        return componentView
-    }
 
     //Sets up info box
     private fun infoBoxSetUp(componentView: View){
