@@ -29,4 +29,10 @@
     <string name="darkMode_Title">Dark Mode einschalten</string>
     <string name="darkMode_SummaryON">Dark Mode an</string>
     <string name="darkMode_SummaryOFF">Dark Mode aus</string>
+
+    <string name="googleSignIn_Title">Google Account aktivieren</string>
+    <string name="googleSignIn_SummaryON">Google Account aktiviert</string>
+    <string name="googleSignIn_SummaryOFF">Google Account deaktiviert</string>
+
+    <string name="music_Title">Enable music</string>
 </resources>

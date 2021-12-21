@@ -3,17 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/drawable/popupoverbox.xml" value="0.3828125" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/drawable/popupoverbox_background.xml" value="0.3828125" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/font/arcadeclassic.xml" value="0.12685185185185185" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_level.xml" value="0.14629629629629629" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_level1.xml" value="0.14" />
+        <entry key="../../../../../layout/custom_preview.xml" value="0.13425925925925927" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_levels.xml" value="0.2015625" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/levels_item.xml" value="0.19791666666666666" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/popup_layout.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/popup_layout_info.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/popup_layout_levelcomplete.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/layout/settings_activity.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Dennis/AndroidStudioProjects/LogoLink/app/src/main/res/xml/root_preferences.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.13697916666666668" />
@@ -23,7 +16,7 @@
         <entry key="app/src/main/res/layout/activity_level.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_level1.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_levels.xml" value="0.1692734611503532" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/levels_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/popup_layout_levelcomplete.xml" value="0.17572463768115942" />
         <entry key="app/src/main/res/layout/settings_activity.xml" value="0.335" />

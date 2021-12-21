@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:fillViewport="true"
-    android:background="@drawable/background"
     >
     <!-- Constraint layout /-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,6 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/background_animated_small"
+            app:layout_constraintTop_toTopOf="parent"/>
         <!-- App logo /-->
 
         <pl.droidsonroids.gif.GifImageView
