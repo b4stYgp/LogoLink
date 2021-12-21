@@ -47,12 +47,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
     var layerViewList= mutableListOf<MutableList<ImageView>>()
     var guidelineList = mutableListOf<Guideline>()
     val constraintSet = ConstraintSet()
-    //Dictionary for drawing positions
     val gateInputs = mutableMapOf<Int, MutableList<Component>>()
     val gateInputConnections = mutableListOf<Pair<Int, Int>>()
-    //TODO: gateInputConnections = guideLineTEST IF EVERYTHING WORKS PROPERLY
     val guideLineTEST = mutableListOf<Pair< Int, Pair<Int, Int>>>()
-
     val popupDialog: Dialog = Dialog(context)
 
     fun mapLevelToView(){
@@ -63,7 +60,209 @@ class ViewLoader(val activity: Activity,val context: Context) {
         setInputConstraints()
         setComponentConstraints()
         mapGateInputs()
-        //drawLines()
+    }
+
+    private fun generateIdListsFromLevel(){
+        //Button ids
+        var btnIds = mutableListOf<Int>()
+        level.defaultInputList.forEach(){
+            btnIds.add(View.generateViewId())
+        }
+        btnViewIds = btnIds
+
+        //Component ids
+        var compIdsList = mutableListOf<MutableList<Int>>()
+        for (input in level.layerList){
+            compIdsList.add(generateCompIds(input))
+        }
+        cmpViewIdsList=compIdsList
+
+        //Guideline ids
+        var glIds = mutableListOf<Int>()
+        for(layer in level.layerList)
+            glIds.add(View.generateViewId())
+        glViewIds=glIds
+    }
+
+    //Creates input buttons
+    private fun createInputView() {
+        for (component in level.defaultInputList) {
+            val input = ImageButton(context)
+            input.layoutParams = LinearLayout.LayoutParams(
+                WRAP_CONTENT,
+                WRAP_CONTENT
+            )
+            input.background = null
+            //Image
+            if (component.setResult())
+                input.setImageResource(R.drawable.lamp_on)
+            else
+                input.setImageResource(R.drawable.lamp_off)
+            input.setOnClickListener { imageView ->
+                val btn = imageView
+                if (component.setResult()) {
+                    input.setImageResource(R.drawable.lamp_off)
+                    !level.defaultInputList[level.defaultInputList.indexOf(component)]
+                } else {
+                    input.setImageResource(R.drawable.lamp_on)
+                    !level.defaultInputList[level.defaultInputList.indexOf(component)]
+                }
+                //Change ImageView Ressource by setResult
+                layerViewList.forEachIndexed{layerIndex, layer ->
+                    layer.forEachIndexed(){imageViewIndex, imageView ->
+                        if(level.layerList[layerIndex].componentList[imageViewIndex].setResult() &&
+                            !(level.layerList[layerIndex].componentList[imageViewIndex].toString().contains("Identity")))
+                            imageView.setImageResource(R.drawable.gate_true)
+                        else if(!(level.layerList[layerIndex].componentList[imageViewIndex].toString().contains("Identity")))
+                            imageView.setImageResource(R.drawable.gate_false)
+                    }
+                }
+                if(level.getLastResult()){
+                    popupDialog.setContentView(R.layout.popup_layout_levelcomplete)
+                    val btn_exit = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_exit_btn)
+                    val btn_continue = popupDialog.findViewById<ImageButton>(R.id.popupoverbox_box_continue_btn)
+
+                    //Update shared pref
+                    var levelNumber = activity.intent.extras!!.get("levelname").toString().filter {
+                        it.isDigit()
+                    }.toInt()
+                    //Prevent from accessing non-existing levels
+                    if(sp.getInt("highestLevelReached", 1) < levelNumber
+                        && context.assets.list("levels")?.size?:0 > levelNumber) {
+                        val spe = sp.edit()
+                        spe.apply {
+                            putInt("highestLevelReached", levelNumber)
+                            apply()
+                        }
+                    }
+
+                    //Infobox listeners
+                    btn_exit.setOnClickListener {
+                        activity.finish()
+                    }
+                    btn_continue.setOnClickListener {
+                        levelNumber += 1
+                        val nextLevelName = levelNumber
+                        context.startActivity(Intent(it.context, LevelActivity::class.java)
+                            .putExtra("levelname",nextLevelName))
+                        activity.finish()
+                    }
+                    //popupDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    Thread.sleep(250)
+                    popupDialog.show()
+                }
+            }
+            //get corresponding id
+            input.id = btnViewIds[level.defaultInputList.indexOf(component)]
+            inputBtnViewList.add(input)
+            activity.LevelLayout.addView(input)
+        }
+    }
+
+    //Creates gate element
+    private fun createLayerViewList() {
+        level.layerList.forEachIndexed { layerIndex, layer ->
+            val compViewList = mutableListOf<ImageView>()
+            layer.componentList.forEachIndexed() { componentIndex, component ->
+                val componentViewIndex = cmpViewIdsList[layerIndex][componentIndex]
+                compViewList.add(createComponentView(component, componentViewIndex))
+                //Fill dictionary for mapping
+                gateInputs.put(componentViewIndex, component.inputList)
+            }
+            layerViewList.add(compViewList)
+        }
+    }
+
+    //Creates guidelines for each layer
+    private fun createGuidelines() {
+        var myfloat = 0.0F
+        for(layer in level.layerList) {
+            val layerIndex = level.layerList.indexOf(layer)
+            val guideline = Guideline(context)
+            //Set constraint parameters
+            val constraintParams = ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            constraintParams.orientation = ConstraintLayout.LayoutParams.VERTICAL
+            guideline.layoutParams = constraintParams
+
+            //Create guideline
+            guideline.id = glViewIds[layerIndex]
+            val index = level.layerList.indexOf(layer)
+            val layerSize = level.layerList.size
+            myfloat = (1 / (layerSize.toFloat() + 1))
+            guideline.setGuidelineBegin(((index+1)*myfloat*getScreenWidth()).toInt())
+
+            guidelineList.add(guideline)
+            activity.LevelLayout.addView(guideline)
+        }
+    }
+
+    //Set constraint for input lamps
+    fun setInputConstraints(){
+        val constId = R.id.LevelLayout
+
+        constraintSet.clone(activity.LevelLayout)
+        inputBtnViewList.forEach(){
+            val index = inputBtnViewList.indexOf(it)
+            constraintSet.connect(it.id,ConstraintSet.RIGHT,guidelineList[0].id,ConstraintSet.LEFT)
+            constraintSet.connect(it.id,ConstraintSet.LEFT,constId,ConstraintSet.LEFT)
+            //Top/Bottom constraints
+            //Top Input
+            if(index == 0){
+                constraintSet.connect(it.id,ConstraintSet.TOP,constId,ConstraintSet.TOP)
+                constraintSet.connect(it.id,ConstraintSet.BOTTOM,inputBtnViewList[index+1].id,ConstraintSet.TOP)
+            }
+            //Middle Input
+            else if(index < inputBtnViewList.size-1) {
+                constraintSet.connect(it.id,ConstraintSet.TOP,inputBtnViewList[index - 1].id,ConstraintSet.BOTTOM)
+                constraintSet.connect(it.id,ConstraintSet.BOTTOM,inputBtnViewList[index + 1].id,ConstraintSet.TOP)
+            }
+            //Bottom Input
+            else if(index == inputBtnViewList.size-1){
+                constraintSet.connect(it.id,ConstraintSet.TOP,inputBtnViewList[index -1].id,ConstraintSet.BOTTOM)
+                constraintSet.connect(it.id,ConstraintSet.BOTTOM,constId,ConstraintSet.BOTTOM)
+            }
+        }
+    }
+
+    //Set constraints for every component inside each layer
+    private fun setComponentConstraints() {
+        for (layer in layerViewList) {
+            val layerIndex = layerViewList.indexOf(layer)
+            for (view in layer) {
+                val viewIndex = layer.indexOf(view)
+                //End Gate
+                if(layerIndex == layerViewList.lastIndex){
+                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
+                    constraintSet.connect(view.id,ConstraintSet.RIGHT,activity.LevelLayout.id,ConstraintSet.RIGHT)
+                    constraintSet.connect(view.id,ConstraintSet.TOP,activity.LevelLayout.id,ConstraintSet.TOP)
+                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,activity.LevelLayout.id,ConstraintSet.BOTTOM)
+                }
+                //Top / First Gate
+                else if(viewIndex == 0){
+                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
+                    constraintSet.connect(view.id,ConstraintSet.RIGHT,guidelineList[layerIndex+1].id,ConstraintSet.LEFT)
+                    constraintSet.connect(view.id,ConstraintSet.TOP,activity.LevelLayout.id, ConstraintSet.TOP)
+                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,layer[viewIndex+1].id,ConstraintSet.TOP)
+                }
+                //Middle Gate
+                else if(viewIndex != layer.lastIndex){
+                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
+                    constraintSet.connect(view.id,ConstraintSet.RIGHT,guidelineList[layerIndex+1].id,ConstraintSet.LEFT)
+                    constraintSet.connect(view.id,ConstraintSet.TOP,layer[viewIndex-1].id,ConstraintSet.BOTTOM)
+                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,layer[viewIndex+1].id,ConstraintSet.TOP)
+                }
+                //Bottom / Last Gate
+                else if(viewIndex == layer.lastIndex){
+                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
+                    constraintSet.connect(view.id,ConstraintSet.RIGHT,guidelineList[layerIndex+1].id,ConstraintSet.LEFT)
+                    constraintSet.connect(view.id,ConstraintSet.TOP,layer[viewIndex-1].id,ConstraintSet.BOTTOM)
+                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,activity.LevelLayout.id,ConstraintSet.BOTTOM)
+                }
+                //Add and constraint gate text
+                constraintText(view, activity)
+            }
+            activity.LevelLayout.setConstraintSet(constraintSet)
+        }
     }
 
     //Maps dictionary
@@ -169,46 +368,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
         activity.addContentView(background, params)
     }
 
-    //Creates guidelines for each layer
-    private fun createGuidelines() {
-        var myfloat = 0.0F
-        for(layer in level.layerList) {
-            val layerIndex = level.layerList.indexOf(layer)
-            val guideline = Guideline(context)
-            //Set constraint parameters
-            val constraintParams = ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-            constraintParams.orientation = ConstraintLayout.LayoutParams.VERTICAL
-            guideline.layoutParams = constraintParams
 
-            //Create guideline
-            guideline.id = glViewIds[layerIndex]
-            val index = level.layerList.indexOf(layer)
-            val layerSize = level.layerList.size
-            myfloat = (1 / (layerSize.toFloat() + 1))
-            guideline.setGuidelineBegin(((index+1)*myfloat*getScreenWidth()).toInt())
 
-            guidelineList.add(guideline)
-            activity.LevelLayout.addView(guideline)
-        }
-    }
-    //Left
-    //constraintSet.connect(currentObject.id,
-    // ConstraintSet.LEFT, leftObject.id, 0)
-
-    //Creates gate element
-    private fun createLayerViewList() {
-        level.layerList.forEachIndexed { layerIndex, layer ->
-            val compViewList = mutableListOf<ImageView>()
-            layer.componentList.forEachIndexed() { componentIndex, component ->
-                val componentViewIndex = cmpViewIdsList[layerIndex][componentIndex]
-                compViewList.add(createComponentView(component, componentViewIndex))
-                //Fill dictionary for mapping
-                gateInputs.put(componentViewIndex, component.inputList)
-            }
-            layerViewList.add(compViewList)
-        }
-    }
-
+<<<<<<< Updated upstream
     //Creates input buttons
     private fun createInputView() {
         for (component in level.defaultInputList) {
@@ -305,6 +467,9 @@ class ViewLoader(val activity: Activity,val context: Context) {
             glIds.add(View.generateViewId())
         glViewIds=glIds
     }
+=======
+
+>>>>>>> Stashed changes
 
     //Generate ids for each component
     private fun generateCompIds(layer: Layer): MutableList<Int> {
@@ -314,6 +479,8 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
         return compIds
     }
+
+
 
 
     //Create component image
@@ -395,33 +562,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
     }
 
-    //Set constraint for input lamps
-    fun setInputConstraints(){
-        val constId = R.id.LevelLayout
 
-        constraintSet.clone(activity.LevelLayout)
-        inputBtnViewList.forEach(){
-            var index = inputBtnViewList.indexOf(it)
-            constraintSet.connect(it.id,ConstraintSet.RIGHT,guidelineList[0].id,ConstraintSet.LEFT)
-            constraintSet.connect(it.id,ConstraintSet.LEFT,constId,ConstraintSet.LEFT)
-            //Top/Bottom constraints
-            //Top Input
-            if(index == 0){
-                constraintSet.connect(it.id,ConstraintSet.TOP,constId,ConstraintSet.TOP)
-                constraintSet.connect(it.id,ConstraintSet.BOTTOM,inputBtnViewList[index+1].id,ConstraintSet.TOP)
-            }
-            //Middle Input
-            else if(index < inputBtnViewList.size-1) {
-                constraintSet.connect(it.id,ConstraintSet.TOP,inputBtnViewList[index - 1].id,ConstraintSet.BOTTOM)
-                constraintSet.connect(it.id,ConstraintSet.BOTTOM,inputBtnViewList[index + 1].id,ConstraintSet.TOP)
-            }
-            //Bottom Input
-            else if(index == inputBtnViewList.size-1){
-                constraintSet.connect(it.id,ConstraintSet.TOP,inputBtnViewList[index -1].id,ConstraintSet.BOTTOM)
-                constraintSet.connect(it.id,ConstraintSet.BOTTOM,constId,ConstraintSet.BOTTOM)
-            }
-        }
-    }
 
     //Get screen width
     @SuppressLint("ObsoleteSdkInt")
@@ -453,46 +594,7 @@ class ViewLoader(val activity: Activity,val context: Context) {
         }
     }
 
-    //Set constraints for every component inside each layer
-    private fun setComponentConstraints() {
-        for (layer in layerViewList) {
-            val layerIndex = layerViewList.indexOf(layer)
-            for (view in layer) {
-                val viewIndex = layer.indexOf(view)
-                //End Gate
-                if(layerIndex == layerViewList.lastIndex){
-                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
-                    constraintSet.connect(view.id,ConstraintSet.RIGHT,activity.LevelLayout.id,ConstraintSet.RIGHT)
-                    constraintSet.connect(view.id,ConstraintSet.TOP,activity.LevelLayout.id,ConstraintSet.TOP)
-                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,activity.LevelLayout.id,ConstraintSet.BOTTOM)
-                }
-                //Top / First Gate
-                else if(viewIndex == 0){
-                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
-                    constraintSet.connect(view.id,ConstraintSet.RIGHT,guidelineList[layerIndex+1].id,ConstraintSet.LEFT)
-                    constraintSet.connect(view.id,ConstraintSet.TOP,activity.LevelLayout.id, ConstraintSet.TOP)
-                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,layer[viewIndex+1].id,ConstraintSet.TOP)
-                }
-                //Middle Gate
-                else if(viewIndex != layer.lastIndex){
-                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
-                    constraintSet.connect(view.id,ConstraintSet.RIGHT,guidelineList[layerIndex+1].id,ConstraintSet.LEFT)
-                    constraintSet.connect(view.id,ConstraintSet.TOP,layer[viewIndex-1].id,ConstraintSet.BOTTOM)
-                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,layer[viewIndex+1].id,ConstraintSet.TOP)
-                }
-                //Bottom / Last Gate
-                else if(viewIndex == layer.lastIndex){
-                    constraintSet.connect(view.id,ConstraintSet.LEFT,guidelineList[layerIndex].id,ConstraintSet.RIGHT)
-                    constraintSet.connect(view.id,ConstraintSet.RIGHT,guidelineList[layerIndex+1].id,ConstraintSet.LEFT)
-                    constraintSet.connect(view.id,ConstraintSet.TOP,layer[viewIndex-1].id,ConstraintSet.BOTTOM)
-                    constraintSet.connect(view.id,ConstraintSet.BOTTOM,activity.LevelLayout.id,ConstraintSet.BOTTOM)
-                }
-                //Add and constraint gate text
-                constraintText(view, activity)
-            }
-            activity.LevelLayout.setConstraintSet(constraintSet)
-        }
-    }
+
 
     //Adds and constraints text
     private fun constraintText(view: View, activity: Activity){
