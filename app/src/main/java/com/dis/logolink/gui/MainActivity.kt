@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         //full screen for diffrent devices
         when (Build.VERSION.SDK_INT) {
-            in Int.MAX_VALUE..30 -> {
+            in Int.MAX_VALUE..30 -> {       //consider deprecated FlagFullscreen
                 ViewCompat . getWindowInsetsController (window.decorView)!!
                     .hide(WindowInsetsCompat.Type.systemBars())
             }
